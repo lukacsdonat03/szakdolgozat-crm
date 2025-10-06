@@ -6,6 +6,7 @@ use app\base\Controller;
 use app\components\AppAlert;
 use app\components\GlobalHelper;
 use app\modules\users\models\forms\RegistrationForm;
+use app\modules\users\Usermodule;
 use yii\filters\AccessControl;
 use Yii;
 
@@ -31,7 +32,7 @@ class RegistrationController extends Controller{
 
     public function actionRegistration(){
         if(!Yii::$app->user->isGuest){
-            //TODO: REDIRECT TO PROFILE PAGE
+            return $this->redirect(Usermodule::PROFILE_URL);
         }
         
         $model = new RegistrationForm();

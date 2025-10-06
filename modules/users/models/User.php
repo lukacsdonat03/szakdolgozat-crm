@@ -109,4 +109,24 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->token === $authKey;
     }
 
+
+      /**
+     * Felhasználó keresése felhasználónév alapján
+     * @param $username string Felhasználónév
+     * @return static|null
+     */
+    public static function findByUsername($username) {
+        $user = self::find()->where(["username" => $username])->one();
+        return (!empty($user))?$user:null;
+    }
+
+    /**
+     * Felhasználó keresése e-mail cím alapján
+     * @param $email string E-mail cím
+     * @return static|null
+     */
+    public static function findByEmail($email) {
+        $user = self::find()->where(["email" => $email])->one();
+        return (!empty($user))?$user:null;
+    }
 }

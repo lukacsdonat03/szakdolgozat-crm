@@ -37,7 +37,7 @@ $config = [
             ],
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\users\models\User',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
