@@ -13,8 +13,8 @@ use Yii;
  * @property int|null $phone Telefonszám
  * @property int|null $position_id Beosztés
  *
- * @property UserPositions $position
- * @property UserUsers $user
+ * @property Position $position
+ * @property User $user
  */
 class Profile extends \yii\db\ActiveRecord
 {
@@ -38,8 +38,8 @@ class Profile extends \yii\db\ActiveRecord
             [['user_id', 'name'], 'required'],
             [['user_id', 'phone', 'position_id'], 'integer'],
             [['name'], 'string', 'max' => 128],
-            [['position_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserPositions::class, 'targetAttribute' => ['position_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserUsers::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['position_id'], 'exist', 'skipOnError' => true, 'targetClass' => Position::class, 'targetAttribute' => ['position_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getPosition()
     {
-        return $this->hasOne(UserPositions::class, ['id' => 'position_id']);
+        return $this->hasOne(Position::class, ['id' => 'position_id']);
     }
 
     /**
@@ -74,7 +74,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(UserUsers::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
 }

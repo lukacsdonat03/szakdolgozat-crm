@@ -36,10 +36,6 @@ $config = [
                 ],
             ],
         ],
-        /* 'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ], */   //TODO
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

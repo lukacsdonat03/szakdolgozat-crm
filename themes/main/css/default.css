@@ -1,0 +1,45 @@
+:root{
+    --font-primary: "Inter", sans-serif;
+    --color-primary: #4dd653;
+    --color-secondary: #26A69A;
+    --color-alt: #00796B;
+    --color-black: #1D1D1B;
+}
+
+body{
+    font-family: var(--font-primary);
+    color: var(--color-black);
+    line-height: 125%;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.container-background{
+    background: linear-gradient(to right bottom, var(--color-alt), var(--color-secondary) 20%, var(--color-primary));
+}
+
+a{
+    color: var(--color-black);
+    text-decoration: none;
+}
+
+.anim, .anim :where(path,circle, line,rect,span,strong,p){
+    transition: all .2s ease-in-out;
+}
+
+.anim-slow{
+    transition: all .4s ease-in-out;
+}
+
+img{
+    max-width: 100%;
+}
+
+.ml-auto{
+    margin-left: auto;
+}
+
+.mr-auto{
+    margin-right: auto;
+}
