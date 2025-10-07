@@ -1,8 +1,8 @@
 <?php
-
+  
 ?>
 
-<nav id="sidebar" class="d-lg-block bg-white active border-end vh-100 position-fixed">
+<nav id="sidebar" class="d-flex flex-column bg-white active border-end vh-100 position-fixed">
   <div class="p-3">
     <h5 class="mb-4 text-uppercase text-muted">Menü</h5>
     <ul class="nav flex-column">
@@ -33,4 +33,19 @@
       </li>
     </ul>
   </div>
+  <div class="p-3 avatar-wrapper">
+    <div class="sidebar-footer w-100 pt-2 dropup">
+      <button type="button" class="avatar-container anim rounded-circle d-flex align-items-center justify-content-center"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="/img/avatar.svg" alt="Avatar">
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Menu item</a></li>
+        <li><a class="dropdown-item" href="#">Menu item</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Menu item</a></li>
+      </ul>
+    </div>
+  </div>
+
 </nav>

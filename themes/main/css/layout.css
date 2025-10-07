@@ -48,6 +48,26 @@ header{
   color: var(--color-secondary) !important;
   background: rgba(77, 241, 83, 0.2);
 }
+footer{
+  padding: 15px 0;
+  border-top: 1px solid var(--color-primary);
+}
+.avatar-wrapper{
+  margin-top: auto;
+  margin-bottom: 70px; 
+}
+.sidebar-footer{
+  border-top: 1px solid var(--color-primary);
+}
+.avatar-container{
+  border: 1px solid var(--color-primary);
+  aspect-ratio: 1;
+  max-width: 40px;
+  background: transparent;
+}
+.avatar-container:hover{
+  background: #f5f5f5;
+}
 
 /* MEDIA QUERIES */
 @media (max-width: 992px) {

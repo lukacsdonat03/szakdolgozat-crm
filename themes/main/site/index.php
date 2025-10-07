@@ -1,5 +1,5 @@
 <?php
 
-?>
+$this->title = "CRM Light";
 
-index
+?>
