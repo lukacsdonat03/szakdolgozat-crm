@@ -39,6 +39,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\modules\users\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['users/login/login']
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -64,9 +65,25 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'site/index',
+                'bejelentkezes' => 'users/login/login',
+                'regisztracio' => 'users/registration/registration', 
+                'profilom' => 'users/profile/profile', 
             ],
         ],
        
+        'view' => [
+            'class' => 'yii\web\View',
+            'theme' => [
+                'basePath' => '@app/themes/main',
+                'baseUrl' => '@web/themes/main',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/main',
+                    '@app/modules' => '@app/themes/main/modules',
+            
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

@@ -81,7 +81,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserProfiles()
+    public function getProfile()
     {
         return $this->hasMany(Profile::class, ['user_id' => 'id']);
     }

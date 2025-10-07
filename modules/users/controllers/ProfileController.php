@@ -1,9 +1,13 @@
 <?php
 
-namespace app\modules\users\controller;
+namespace app\modules\users\controllers;
 
+use app\components\GlobalHelper;
 use app\modules\users\models\Profile;
 use app\modules\users\models\search\ProfileSearch;
+use app\modules\users\models\User;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +25,16 @@ class ProfileController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['profile'],
+                            'allow' => true,
+                            'roles' => ['@']
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -29,6 +43,16 @@ class ProfileController extends Controller
                 ],
             ]
         );
+    }
+
+    public function actionProfile(){
+        $user = User::findOne(Yii::$app->user->id);
+        $profile = $user->profile;
+
+        return $this->render('profile',[
+            'user' => $user,
+            'profile' => $profile,
+        ]);
     }
 
     /**

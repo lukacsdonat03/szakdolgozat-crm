@@ -15,9 +15,14 @@ class Usermodule extends \yii\base\Module
      */
     public $controllerNamespace = 'app\modules\users\controllers';
 
+    //STATUSES
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_BANNED = 2;
+
+    //RIGHTS
+    const RIGHT_USER = 0;
+    const RIGHT_ADMIN = 1;
 
     const REMEMBER_ME_TIME = Constants::DAY_IN_SECONDS * 30;
     const ACTIVATION_TIME = Constants::DAY_IN_SECONDS * 7;
@@ -27,7 +32,7 @@ class Usermodule extends \yii\base\Module
     const REGISTRATION_URL = ["/users/registration/registration"];
     const REGISTRATION_SUCCESS_URL = ["/users/registration/success"];
     const LOGIN_URL = ["/users/login/login"];
-    const LOGOUT_URL = ["/users/logout/logout"];
+    const LOGOUT_URL = ["/users/logout/logout"];   //TODO
     const PROFILE_URL = ["/users/profile/profile"];
     const RETURN_URL = ["/users/profile/profile"];
     const RETURN_LOGOUT_URL = ["/"];
@@ -49,6 +54,14 @@ class Usermodule extends \yii\base\Module
             self::STATUS_BANNED => 'Kitíltva',
         ];
         return ($item===false)? $values : ((!empty($values[$item]))?$values[$item]:'');
+    }
+
+    public static function getRights($item = false){
+        $options = [
+            self::RIGHT_USER => 'Felhasználó',
+            self::RIGHT_ADMIN => 'Admin',
+        ];
+        return ($item === false) ? $options : $options[$item];
     }
 
      public static function encrypting($string="") {

@@ -53,4 +53,9 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
+    public function actionClear(){
+        Yii::$app->session->destroy();
+        Yii::$app->user->logout();
+    }
 }

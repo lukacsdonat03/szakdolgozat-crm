@@ -3,6 +3,7 @@
 use app\modules\users\models\forms\LoginForm;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = "Bejelentkezés";
 
@@ -28,7 +29,10 @@ $this->title = "Bejelentkezés";
 
         <?= $form->field($model, 'password')->passwordInput(['class'=>'auth-form-input','placeholder' => $model->getAttributeLabel('password')])->label(false) ?>
         
-        <?= Html::submitButton('Bejelentkezés',['class'=>'auth-btn anim d-flex align-items-center justify-content-center text-center']) ?>
+        <div class="d-flex align-items-sm-center align-items-start gap-sm-3 gap-0 flex-column flex-sm-row">
+            <?= Html::submitButton('Bejelentkezés',['class'=>'auth-btn anim d-flex align-items-center justify-content-center text-center']) ?>
+            <?= Html::a('Regisztráció',Url::to(['/users/registration/registration']),['class' => 'auth-btn btn-dark anim d-flex align-items-center justify-content-center text-center']) ?>
+        </div>
     <?php
         ActiveForm::end();
     ?>

@@ -2,9 +2,11 @@
 
 use app\assets\AppAsset;
 use app\assets\AuthAsset;
+use app\assets\LayoutAsset;
 use yii\bootstrap5\Html;
 
 AppAsset::register($this);
+LayoutAsset::register($this);
 
 ?>
 
@@ -24,8 +26,14 @@ AppAsset::register($this);
 
 <body class="d-flex flex-column min-vh-100">
     <?php $this->beginBody() ?>
-    main
-    <main id="main" class="flex-shrink-0" role="main">
+    
+    <!-- HEADER -->
+    <?= Yii::$app->controller->renderPartial('@app/themes/main/layouts/_header') ?>
+    
+    <!-- SIDEBAR -->
+    <?= Yii::$app->controller->renderPartial('@app/themes/main/layouts/_sidebar') ?>
+    
+    <main id="main" class="flex-shrink-0 main-element anim" role="main">
         <div class="container">
             <?= $content ?>
         </div>
