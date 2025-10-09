@@ -32,10 +32,10 @@ class Usermodule extends \yii\base\Module
     const REGISTRATION_URL = ["/users/registration/registration"];
     const REGISTRATION_SUCCESS_URL = ["/users/registration/success"];
     const LOGIN_URL = ["/users/login/login"];
-    const LOGOUT_URL = ["/users/logout/logout"];   //TODO
+    const LOGOUT_URL = ["/users/user/logout"];
     const PROFILE_URL = ["/users/profile/profile"];
     const RETURN_URL = ["/users/profile/profile"];
-    const RETURN_LOGOUT_URL = ["/"];
+    const RETURN_LOGOUT_URL = ["/users/login/login"];
 
     /**
      * {@inheritdoc}

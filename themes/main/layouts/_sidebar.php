@@ -1,5 +1,8 @@
 <?php
-  
+
+use app\modules\users\Usermodule;
+use yii\helpers\Url;
+
 ?>
 
 <nav id="sidebar" class="d-flex flex-column bg-white active border-end vh-100 position-fixed">
@@ -41,9 +44,9 @@
       </button>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="#">Menu item</a></li>
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
+        <li><a class="dropdown-item" href="<?= Url::to(['/users/profile/profile']) ?>">Profilom</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
+        <li><a class="dropdown-item" href="<?= Url::to(Usermodule::LOGOUT_URL) ?>" data-method="POST">Kijelentkezés</a></li>
       </ul>
     </div>
   </div>

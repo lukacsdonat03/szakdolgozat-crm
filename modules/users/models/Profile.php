@@ -10,7 +10,7 @@ use Yii;
  * @property int $id Azonosító
  * @property int $user_id Felhasználó
  * @property string $name Név
- * @property int|null $phone Telefonszám
+ * @property string|null $phone Telefonszám
  * @property int|null $position_id Beosztés
  *
  * @property Position $position
@@ -36,8 +36,9 @@ class Profile extends \yii\db\ActiveRecord
         return [
             [['phone', 'position_id'], 'default', 'value' => null],
             [['user_id', 'name'], 'required'],
-            [['user_id', 'phone', 'position_id'], 'integer'],
+            [['user_id', 'position_id'], 'integer'],
             [['name'], 'string', 'max' => 128],
+            [['phone'], 'string', 'max' => 32],
             [['position_id'], 'exist', 'skipOnError' => true, 'targetClass' => Position::class, 'targetAttribute' => ['position_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];

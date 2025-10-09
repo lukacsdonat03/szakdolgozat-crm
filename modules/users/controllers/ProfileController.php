@@ -2,7 +2,9 @@
 
 namespace app\modules\users\controllers;
 
+use app\components\AppAlert;
 use app\components\GlobalHelper;
+use app\modules\users\models\forms\ChangePasswordForm;
 use app\modules\users\models\Profile;
 use app\modules\users\models\search\ProfileSearch;
 use app\modules\users\models\User;
@@ -46,12 +48,30 @@ class ProfileController extends Controller
     }
 
     public function actionProfile(){
+
+        $postData = Yii::$app->request->post();
+
         $user = User::findOne(Yii::$app->user->id);
         $profile = $user->profile;
+        $position = $profile->position;
+        
+        $passwordForm = new ChangePasswordForm();
+
+        if($passwordForm->load($postData) && $passwordForm->changepassword()){
+            AppAlert::addSuccessAlert('Sikeres jelszó módsítás!');
+            return $this->refresh();
+        }
+
+        if($user->load($postData) && $user->save() && $profile->load($postData) && $profile->save()){
+            AppAlert::addSuccessAlert('Sikeres módosítás!');
+            return $this->refresh();
+        }
 
         return $this->render('profile',[
             'user' => $user,
             'profile' => $profile,
+            'position' => $position,
+            'passwordForm' => $passwordForm,
         ]);
     }
 

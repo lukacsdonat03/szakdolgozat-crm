@@ -1,7 +1,8 @@
-header{
+header {
   height: 60px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
 }
+
 #sidebar {
   width: 250px;
   transition: transform 0.3s ease-in-out;
@@ -17,22 +18,24 @@ header{
 #sidebar {
   transform: translateX(-100%);
 }
+
 #sidebar.active {
   transform: translateX(0);
 }
 
-.header-logo img{
+.header-logo img {
   max-height: 40px;
 }
-.main-element{
+
+.main-element {
   margin-left: 250px;
 }
 
-#sidebar .nav-link{
+#sidebar .nav-link {
   border-radius: 5px;
 }
 
-.sidebar-toggler{
+.sidebar-toggler {
   border: none;
   background: transparent;
   box-shadow: none;
@@ -40,47 +43,196 @@ header{
   font-size: 30px;
   color: #6c757d;
 }
-.sidebar-toggler:hover{
+
+.sidebar-toggler:hover {
   color: var(--color-primary);
 }
 
-#sidebar .nav-link:is(:hover,:focus){
+#sidebar .nav-link:is(:hover, :focus) {
   color: var(--color-secondary) !important;
   background: rgba(77, 241, 83, 0.2);
 }
-footer{
+
+footer {
   padding: 15px 0;
   border-top: 1px solid var(--color-primary);
 }
-.avatar-wrapper{
+
+.avatar-wrapper {
   margin-top: auto;
-  margin-bottom: 70px; 
+  margin-bottom: 70px;
 }
-.sidebar-footer{
+
+.sidebar-footer {
   border-top: 1px solid var(--color-primary);
 }
-.avatar-container{
+
+.avatar-container {
   border: 1px solid var(--color-primary);
   aspect-ratio: 1;
   max-width: 40px;
   background: transparent;
 }
-.avatar-container:hover{
+
+.avatar-container:hover {
   background: #f5f5f5;
 }
 
+.subpage-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-alt);
+  margin-bottom: 15px;
+}
+
+.main-element>.container {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.crm-card {
+  border-radius: 15px;
+  padding: 20px;
+  background: #fff;
+  color: var(--colro-alt);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.profile-avatar-img {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  max-width: 120px;
+  width: 100%;
+}
+
+.avatar-card .username {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.position-label {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+
+.nav-tabs {
+  border-bottom: 2px solid rgba(1, 41, 112, 0.1);
+  margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+  color: var(--color-alt);
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  border-radius: 8px 8px 0 0;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--color-secondary);
+  background: rgba(77, 214, 83, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--color-primary);
+  background: #fff;
+  box-shadow: 0 -3px 10px rgba(1, 41, 112, 0.1);
+  border-bottom: 2px solid var(--color-primary);
+  font-weight: 600;
+}
+
+.tab-content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 25px;
+}
+
+.profile-overview h5.card-title {
+  font-size: 22px;
+  color: var(--color-alt);
+  font-weight: 600;
+  border-bottom: 2px solid rgba(1, 41, 112, 0.1);
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+}
+
+.profile-overview .row {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(1, 41, 112, 0.05);
+}
+
+.profile-overview .row:last-child {
+  border-bottom: none;
+}
+
+.profile-overview .label {
+  color: var(--color-alt);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.profile-overview .col-lg-9,
+.profile-overview .col-md-8 {
+  color: var(--color-black);
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.profile-overview .btn,
+.profile-edit .btn,
+.profile-change-password .btn {
+  background: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.profile-overview .btn:hover,
+.profile-edit .btn:hover,
+.profile-change-password .btn:hover {
+  background: var(--color-secondary);
+}
+
+.profile-content .row{
+  row-gap: 45px;
+}
 /* MEDIA QUERIES */
 @media (max-width: 992px) {
   #main-content {
     margin-left: 0;
   }
-  .main-element{
+
+  .main-element {
     margin-left: 0;
   }
 }
 
-@media (max-width: 576px){
-  #sidebar{
+@media (max-width: 768px) {
+  .nav-tabs .nav-link {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .profile-overview .label,
+  .profile-overview .col-lg-9 {
+    font-size: 14px;
+  }
+
+  .tab-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  #sidebar {
     width: 100% !important;
   }
 }

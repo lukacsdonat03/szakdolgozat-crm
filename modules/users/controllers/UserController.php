@@ -4,6 +4,8 @@ namespace app\modules\users\controllers;
 
 use app\modules\users\models\User;
 use app\modules\users\models\search\UserSearch;
+use app\modules\users\Usermodule;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,10 +27,30 @@ class UserController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'logout' => ['POST']
                     ],
                 ],
             ]
         );
+    }
+
+    public function beforeAction($action)
+    {
+        
+
+        if (in_array($action->id, ['logout'])) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
+    public function actionLogout()
+    {
+        if (!Yii::$app->user->isGuest && Yii::$app->request->isPost) {
+            Yii::$app->user->logout();
+        }
+        return $this->redirect(Usermodule::RETURN_LOGOUT_URL);
     }
 
     /**
