@@ -1,6 +1,8 @@
 <?php
 
+use app\components\GlobalHelper;
 use app\modules\users\models\User;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -10,38 +12,40 @@ use yii\grid\GridView;
 /** @var app\modules\users\models\search\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Users';
+$this->title = 'Felhasználók kezelése';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Létrehozása', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+        $gridColumns =  [
+        ['class' => 'yii\grid\SerialColumn'],
+        'username',
+        'email:email',
+        'registration_date',
+        [
+            'attribute' => 'status',
+            'value' => function ($model) {
+                return GlobalHelper::getValueFromArray(Usermodule::status(),$model->status);
+            },
+            'filter' => Html::activeDropDownList($searchModel,'status',Usermodule::status(),['class' => 'form-select','prompt' => ''])
+        ],
+        [
+            'class' => ActionColumn::className(),
+            'template' => '{update} {delete}'
+        ],
+    ];
+
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'username',
-            'email:email',
-            'password',
-            'registration_date',
-            //'status',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
+        'columns' => $gridColumns,
     ]); ?>
 
 

@@ -204,6 +204,14 @@ footer {
 .profile-content .row{
   row-gap: 45px;
 }
+
+.grid-view .summary{
+  margin-bottom: 1rem;
+}
+.form-group{
+  margin-bottom: 1rem;
+}
+
 /* MEDIA QUERIES */
 @media (max-width: 992px) {
   #main-content {

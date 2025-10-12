@@ -3,7 +3,9 @@
 namespace app\modules\users;
 
 use app\components\Constants;
+use app\components\GlobalHelper;
 use app\modules\users\models\User;
+use Yii;
 
 /**
  * user module definition class
@@ -95,6 +97,20 @@ class Usermodule extends \yii\base\Module
         }
 
         return $username;
+    }
+
+    /**
+     * 
+     * TRUE-val tér vissza ha a bejelentkezett felhasználónak van ADMIN jogosultsága
+     * amúgy FALSE-al
+     * @return boolean
+     */
+    public static function hasAdminRole(){
+        if(!Yii::$app->user->isGuest){
+            $user = Yii::$app->user->identity;
+            return ($user->rights == self::RIGHT_ADMIN);
+        }
+        return false;
     }
 }
 

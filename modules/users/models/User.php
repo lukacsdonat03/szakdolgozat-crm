@@ -5,6 +5,7 @@ namespace app\modules\users\models;
 use Yii;
 use yii\web\IdentityInterface;
 use app\modules\users\models\Profile;
+use app\modules\users\Usermodule;
 
 /**
  * This is the model class for table "user_users".
@@ -22,6 +23,7 @@ use app\modules\users\models\Profile;
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
+    public $new_password;
 
     /**
      * {@inheritdoc}
@@ -39,7 +41,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['registration_date'], 'default', 'value' => null],
             [['status'], 'default', 'value' => 0],
-            [['username', 'email', 'password'], 'required'],
+            [['username', 'email'], 'required'],
             [['registration_date'], 'safe'],
             [['status'], 'integer'],
             [['username', 'email'], 'string', 'max' => 128],
@@ -47,6 +49,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['token'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
+            [['password', 'new_password'], 'safe'],
+            ['new_password', 'required', 'on' => 'create'],
         ];
     }
 
@@ -63,6 +67,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'registration_date' => 'Regisztráció dátuma',
             'status' => 'Státusz',
             'token' => 'Token',
+            'new_password' => 'Jelszó',
         ];
     }
 
@@ -71,9 +76,29 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             if($this->isNewRecord){
                 $this->registration_date = date("Y-m-d H:i:s");
             }
+
+            if($this->new_password!='') {
+                $this->token=Usermodule::generateToken($this->new_password);
+                $this->password=Usermodule::encrypting($this->new_password);
+            }
+
             return true;
         }
         return false;
+    }
+
+    public function afterDelete(){
+        if(parent::afterDelete()){
+            $profile = $this->profile;
+            $position = $this->position;
+
+            if(!empty($position)){
+                $position->delete();
+            }
+            if(!empty($profile)){
+                $profile->delete();
+            }
+        }
     }
 
     /**
@@ -128,5 +153,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function findByEmail($email) {
         $user = self::find()->where(["email" => $email])->one();
         return (!empty($user))?$user:null;
+    }
+
+    public function getPosition(){
+         return $this->hasOne(Position::class, ['id' => 'position_id'])
+            ->via('profile');
+    }
+
+    public function getRights()
+    {
+        $position = $this->position;
+
+        // Ha van pozíció, visszaadjuk a rights mező értékét
+        return $position ? $position->rights : null;
     }
 }

@@ -13,11 +13,14 @@ class GlobalHelper extends Component
      * @param $var mixed változó vagy string
      * @return void
      */
-    public static function debug($var)
-    {
+    public static function debug($var){
         header('Content-type: text/plain; charset=utf-8');
         print_r($var);
         exit();
+    }
+
+    public static function getValueFromArray($array, $key){
+        return (!empty($array[$key]))?$array[$key]:'';
     }
 
 }

@@ -11,7 +11,7 @@ use Yii;
  * @property int $user_id Felhasználó
  * @property string $name Név
  * @property string|null $phone Telefonszám
- * @property int|null $position_id Beosztés
+ * @property int|null $position_id Beosztás
  *
  * @property Position $position
  * @property User $user
@@ -54,7 +54,7 @@ class Profile extends \yii\db\ActiveRecord
             'user_id' => 'Felhasználó',
             'name' => 'Név',
             'phone' => 'Telefonszám',
-            'position_id' => 'Beosztés',
+            'position_id' => 'Beosztás',
         ];
     }
 

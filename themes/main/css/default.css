@@ -48,3 +48,7 @@ img{
 .mr-auto{
     margin-right: auto;
 }
+
+.control-label{
+    margin-bottom: 0.2rem;
+}

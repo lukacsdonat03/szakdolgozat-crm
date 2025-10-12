@@ -3,6 +3,7 @@
 namespace app\modules\users\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "user_positions".
@@ -57,7 +58,12 @@ class Position extends \yii\db\ActiveRecord
      */
     public function getUserProfiles()
     {
-        return $this->hasMany(UserProfiles::class, ['position_id' => 'id']);
+        return $this->hasMany(Profile::class, ['position_id' => 'id']);
+    }
+
+    public static function getToDropdwon(){
+        $models = self::find()->all();
+        return ArrayHelper::map($models,'id','name');
     }
 
 }

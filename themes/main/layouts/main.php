@@ -3,6 +3,8 @@
 use app\assets\AppAsset;
 use app\assets\AuthAsset;
 use app\assets\LayoutAsset;
+use app\components\AppAlert;
+use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 
 AppAsset::register($this);
@@ -41,6 +43,13 @@ LayoutAsset::register($this);
     
     <main id="main" class="flex-shrink-0 main-element anim" role="main">
         <div class="container">
+            <div class="pagetitle">
+                <?php if (!empty($this->params['breadcrumbs'])): ?>
+                    <?= Breadcrumbs::widget(['homeLink' => ['label' => 'Főoldal', 'url' => '/admin'],'links' => $this->params['breadcrumbs']]) ?>
+                <?php endif ?>
+                <h1 class="main-h1"><?= $this->title ?></h1>
+                <?= AppAlert::showAlert() ?>
+            </div>
             <?= $content ?>
         </div>
     </main>

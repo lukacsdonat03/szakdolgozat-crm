@@ -1,0 +1,14 @@
+.main-h1{
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--color-black);
+    margin-bottom: 20px;
+}
+.btn-crm{
+    color: #fff;
+    background: var(--color-alt);
+}
+.btn-crm:hover{
+    background: var(--color-secondary);
+    color: #fff;
+}

@@ -29,11 +29,13 @@ use yii\helpers\Url;
           <i class="bi bi-chat-dots me-2"></i> Messages
         </a>
       </li>
+      <?php if(Usermodule::hasAdminRole()){ ?>
       <li class="nav-item">
-        <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-gear me-2"></i> Settings
+        <a href="<?= Url::to(['/users/user/index']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+          <i class="bi bi-gear me-2"></i> Felhasználók
         </a>
       </li>
+      <?php } ?>
     </ul>
   </div>
   <div class="p-3 avatar-wrapper">
@@ -43,7 +45,6 @@ use yii\helpers\Url;
         <img src="/img/avatar.svg" alt="Avatar">
       </button>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
         <li><a class="dropdown-item" href="<?= Url::to(['/users/profile/profile']) ?>">Profilom</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="<?= Url::to(Usermodule::LOGOUT_URL) ?>" data-method="POST">Kijelentkezés</a></li>

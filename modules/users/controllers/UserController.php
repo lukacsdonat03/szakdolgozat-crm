@@ -2,10 +2,14 @@
 
 namespace app\modules\users\controllers;
 
+use app\components\AppAlert;
+use app\components\GlobalHelper;
+use app\modules\users\models\Profile;
 use app\modules\users\models\User;
 use app\modules\users\models\search\UserSearch;
 use app\modules\users\Usermodule;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,6 +26,26 @@ class UserController extends Controller
     {
         return array_merge(
             parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['logout'],
+                            'allow' => true,
+                            'roles' => ['@']
+                        ],
+                        [
+                            'actions' => ['index','create','update','delete'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                            'matchCallback' => function($rule, $action){
+                                return Usermodule::hasAdminRole();
+                            }
+                        ]
+                    ]
+                ]
+            ],
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -70,19 +94,6 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
-     * @param int $id Azonosító
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
@@ -90,10 +101,27 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
+        $model->scenario = 'create';
+
+        $profile = new Profile();
+
+        $postData = Yii::$app->request->post();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($postData) && $profile->load($postData)) {
+                 if($model->save()) {
+                    $profile->user_id=$model->id;
+                    if($profile->save()) {
+                        AppAlert::addSuccessAlert("Sikeres mentés");
+                        return $this->redirect(['index']);
+                    }else{
+                        GlobalHelper::debug([$profile->errors]);
+                    }
+                }else{
+                    GlobalHelper::debug([$model->errors]);    
+                }
+            }else{
+                GlobalHelper::debug([$model,$profile]);
             }
         } else {
             $model->loadDefaultValues();
@@ -101,6 +129,7 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'profile' => $profile,
         ]);
     }
 
@@ -114,13 +143,16 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $profile = $model->profile;
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            AppAlert::addSuccessAlert('Sikeres mentés');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'profile' => $profile,
         ]);
     }
 
