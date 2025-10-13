@@ -76,3 +76,5 @@ runtime/cache/*
 runtime/log/*
 runtime/search/*
 runtime/**/*
+
+.env
