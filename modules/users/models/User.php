@@ -2,6 +2,7 @@
 
 namespace app\modules\users\models;
 
+use app\components\GlobalHelper;
 use Yii;
 use yii\web\IdentityInterface;
 use app\modules\users\models\Profile;
@@ -86,6 +87,26 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return false;
     }
+
+    public function afterSave($insert, $changedAttributes){
+        parent::afterSave($insert, $changedAttributes);
+
+        // Csak akkor küldjünk e-mailt, ha a státusz ténylegesen megváltozott
+        if (array_key_exists('status', $changedAttributes)) {
+            $body  = "Kedves " . htmlspecialchars($this->profile->name) . "!<br>";
+            $body .= "CRM felhasználói státusza az alábbira változott: <strong>" 
+                . Usermodule::status($this->status) . "</strong><br><br>";
+            $body .= "Üdvözlettel:<br>CRM Light";
+
+            GlobalHelper::sendMail(
+                $this->email,
+                'CRM felhasználói státusz váltás',
+                strip_tags($body), 
+                $body
+            );
+        }
+    }
+
 
     public function afterDelete(){
         if(parent::afterDelete()){
