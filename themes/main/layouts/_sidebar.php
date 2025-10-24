@@ -29,13 +29,26 @@ use yii\helpers\Url;
           <i class="bi bi-chat-dots me-2"></i> Messages
         </a>
       </li>
-      <?php if(Usermodule::hasAdminRole()){ ?>
-      <li class="nav-item">
-        <a href="<?= Url::to(['/users/user/index']) ?>" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-gear me-2"></i> Felhasználók
-        </a>
-      </li>
-      <?php } ?>
+      <?php if (Usermodule::hasAdminRole()): ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle anim text-dark d-flex align-items-center" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear me-2"></i> Admin
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+            <li>
+              <a class="dropdown-item" href="<?= Url::to(['/users/user/index']) ?>">
+                Felhasználók
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="<?= Url::to(['/users/position/index']) ?>">
+                Szerepkörök
+              </a>
+            </li>
+          </ul>
+        </li>
+      <?php endif; ?>
+
     </ul>
   </div>
   <div class="p-3 avatar-wrapper">
@@ -46,7 +59,9 @@ use yii\helpers\Url;
       </button>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="<?= Url::to(['/users/profile/profile']) ?>">Profilom</a></li>
-        <li><hr class="dropdown-divider"></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
         <li><a class="dropdown-item" href="<?= Url::to(Usermodule::LOGOUT_URL) ?>" data-method="POST">Kijelentkezés</a></li>
       </ul>
     </div>

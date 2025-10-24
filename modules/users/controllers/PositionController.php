@@ -1,9 +1,12 @@
 <?php
 
-namespace app\modules\users\controller;
+namespace app\modules\users\controllers;
 
+use app\components\AppAlert;
 use app\modules\users\models\Position;
 use app\modules\users\models\search\PositionSearch;
+use app\modules\users\Usermodule;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +23,21 @@ class PositionController extends Controller
     {
         return array_merge(
             parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'create', 'update', 'delete'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                            'matchCallback' => function ($rule, $action) {
+                                return Usermodule::hasAdminRole();
+                            }
+                        ],
+                    ]
+                ]
+            ],
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -46,20 +64,6 @@ class PositionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
-    /**
-     * Displays a single Position model.
-     * @param int $id Azonosító
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
     /**
      * Creates a new Position model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -71,7 +75,8 @@ class PositionController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                AppAlert::addSuccessAlert('Sikeres mentés!');
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -94,7 +99,8 @@ class PositionController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            AppAlert::addSuccessAlert('Sikeres módosítás!');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

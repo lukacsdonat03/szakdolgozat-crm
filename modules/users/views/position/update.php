@@ -5,14 +5,11 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\modules\users\models\Position $model */
 
-$this->title = 'Update Position: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Positions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Munkakör módosítása: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Munkakörök', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Módosítás';
 ?>
 <div class="position-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

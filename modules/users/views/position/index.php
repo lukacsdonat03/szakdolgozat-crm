@@ -1,6 +1,8 @@
 <?php
 
+use app\components\GlobalHelper;
 use app\modules\users\models\Position;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -10,33 +12,30 @@ use yii\grid\GridView;
 /** @var app\modules\users\models\search\PositionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Positions';
+$this->title = 'Munkakörök';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="position-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Position', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Létrehozás', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'name',
-            'rights',
+            [
+                'attribute' => 'rights',
+                'value' => function($model){
+                    return GlobalHelper::getValueFromArray(Usermodule::getRights(),$model->rights);
+                },
+                'filter' => Html::activeDropDownList($searchModel,'rights',Usermodule::getRights(),['class' => 'form-select','prompt' => ''])
+            ],
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Position $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'template' => '{update} {delete}'
             ],
         ],
     ]); ?>
