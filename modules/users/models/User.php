@@ -92,7 +92,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         parent::afterSave($insert, $changedAttributes);
 
         // Csak akkor küldjünk e-mailt, ha a státusz ténylegesen megváltozott
-        if (array_key_exists('status', $changedAttributes)) {
+        if (!empty($this->profile) && array_key_exists('status', $changedAttributes)) {
             $body  = "Kedves " . htmlspecialchars($this->profile->name) . "!<br>";
             $body .= "CRM felhasználói státusza az alábbira változott: <strong>" 
                 . Usermodule::status($this->status) . "</strong><br><br>";

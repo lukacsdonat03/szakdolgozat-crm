@@ -41,7 +41,7 @@ class RegistrationController extends Controller{
             if($model->registration()){
                 $session = Yii::$app->session;
                 $session->set('registration','sucesss');
-                return $this->redirect('success');
+                return $this->redirect(['success']);
             }else{
                 AppAlert::addErrorAlert('Hiba történt regisztráció közben!');
             }

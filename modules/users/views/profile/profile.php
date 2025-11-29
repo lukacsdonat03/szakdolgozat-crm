@@ -16,9 +16,6 @@ $this->title = 'Profilom';
 ?>
 
 <div class="profile-view">
-    <h1 class="subpage-title">
-        <?= $this->title ?>
-    </h1>
     <div class="profile-content">
         <div class="row">
             <div class="col-lg-4 col-12">
