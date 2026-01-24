@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2025. Okt 16. 18:08
+-- Létrehozás ideje: 2026. Jan 24. 14:03
 -- Kiszolgáló verziója: 9.1.0
 -- PHP verzió: 8.2.26
 
@@ -20,6 +20,120 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `crm`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `client_clients`
+--
+
+DROP TABLE IF EXISTS `client_clients`;
+CREATE TABLE IF NOT EXISTS `client_clients` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `name` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `company` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Vállalat neve',
+  `email` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'E-mail cím',
+  `phone` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Telefonszám',
+  `tax_number` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Adószám',
+  `address` varchar(126) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Cím',
+  `notes` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Megjegyzés',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `project_projects`
+--
+
+DROP TABLE IF EXISTS `project_projects`;
+CREATE TABLE IF NOT EXISTS `project_projects` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `client_id` int NOT NULL COMMENT 'Ügyfél',
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `description` text COLLATE utf8mb4_general_ci COMMENT 'Leírás',
+  `status_id` int DEFAULT NULL COMMENT 'Státusz',
+  `priority` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Prioritás',
+  `start_date` date NOT NULL COMMENT 'Projekt kezdete',
+  `deadline` date NOT NULL COMMENT 'Határidő',
+  `budget` float DEFAULT NULL COMMENT 'Költségvetési keret',
+  `created_by` int DEFAULT NULL COMMENT 'Létrehozta',
+  `created_at` datetime DEFAULT NULL COMMENT 'Létrehozva',
+  `updated_at` datetime DEFAULT NULL COMMENT 'Módosítva',
+  PRIMARY KEY (`id`),
+  KEY `fk_project_x_clients` (`client_id`),
+  KEY `fk_project_x_statuses` (`status_id`),
+  KEY `fk_project_x_users` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `project_statuses`
+--
+
+DROP TABLE IF EXISTS `project_statuses`;
+CREATE TABLE IF NOT EXISTS `project_statuses` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `name` varchar(68) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `color_code` varchar(7) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Szín',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `project_tags`
+--
+
+DROP TABLE IF EXISTS `project_tags`;
+CREATE TABLE IF NOT EXISTS `project_tags` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `name` varchar(68) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `color_code` varchar(7) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Szín',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `project_tag_relation`
+--
+
+DROP TABLE IF EXISTS `project_tag_relation`;
+CREATE TABLE IF NOT EXISTS `project_tag_relation` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `project_id` int NOT NULL COMMENT 'Projekt',
+  `tag_id` int NOT NULL COMMENT 'Tag',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `project_tasks`
+--
+
+DROP TABLE IF EXISTS `project_tasks`;
+CREATE TABLE IF NOT EXISTS `project_tasks` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
+  `project_id` int DEFAULT NULL COMMENT 'Projekt',
+  `assigned_to` int DEFAULT NULL COMMENT 'Hozzárendelve',
+  `title` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `description` text COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Leírás',
+  `status` tinyint(1) DEFAULT NULL COMMENT 'Státusz',
+  `priority` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Prioritás',
+  `due_date` datetime DEFAULT NULL COMMENT 'Határidő',
+  `estimated_hours` smallint UNSIGNED DEFAULT NULL COMMENT 'Becsült óra',
+  `sort_order` smallint UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Sorrend',
+  `created_by` int DEFAULT NULL COMMENT 'Létrehozta',
+  `created_at` datetime DEFAULT NULL COMMENT 'Létrehozva',
+  `updated_at` datetime DEFAULT NULL COMMENT 'Módosítva',
+  `completed_at` datetime DEFAULT NULL COMMENT 'Elkészült',
+  PRIMARY KEY (`id`),
+  KEY `fk_task_x_project` (`project_id`),
+  KEY `fk_task_x_users` (`assigned_to`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -59,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   PRIMARY KEY (`id`),
   KEY `FK_profiles_user` (`user_id`),
   KEY `FK_profiles_positions` (`position_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `user_profiles`
@@ -67,7 +181,8 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 
 INSERT INTO `user_profiles` (`id`, `user_id`, `name`, `phone`, `position_id`) VALUES
 (1, 2, 'Admin1', '06201234567', 2),
-(2, 3, 'Teszt Elek', '06207654321', 1);
+(2, 3, 'Teszt Elek', '06207654321', 1),
+(3, 6, 'Lukács Donát', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -87,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `user_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_users_username` (`username`),
   UNIQUE KEY `UQ_users_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `user_users`
@@ -95,11 +210,27 @@ CREATE TABLE IF NOT EXISTS `user_users` (
 
 INSERT INTO `user_users` (`id`, `username`, `email`, `password`, `registration_date`, `status`, `token`) VALUES
 (2, 'admin1', 'admin@tempmail.com', '$2y$10$P9KPcmoyOgOSTDykg0ocKeJdtfCJGW/dbZ041.i/WOw7tcWTBw8/W', '2025-10-06 19:11:39', 1, 'ee0d82a6eff93dd35bdfc15c01f5d6ab'),
-(3, 'teszt', 'lukacsdonatxxx@gmail.com', '$2y$10$iUfoe9CmkTzFjBkZeeEPQu9Cjx2Y..flfb.NzA9unSXs9H4m7HUMC', '2025-10-12 19:52:52', 1, '475000e14ec576a7f329c65003853806');
+(3, 'teszt', 'lukacsdonatxxx@gmail.com', '$2y$10$iUfoe9CmkTzFjBkZeeEPQu9Cjx2Y..flfb.NzA9unSXs9H4m7HUMC', '2025-10-12 19:52:52', 1, '475000e14ec576a7f329c65003853806'),
+(6, '', 'vcode.lukacsdonat@gmail.com', '$2y$10$90zfW8V9PaUzVotSwgZZv.bSobQNlr77u5UVJEtjr..a6Jpi1E7vW', '2025-10-24 12:38:43', 0, '9295d25619ecb5c041709c04082a064b');
 
 --
 -- Megkötések a kiírt táblákhoz
 --
+
+--
+-- Megkötések a táblához `project_projects`
+--
+ALTER TABLE `project_projects`
+  ADD CONSTRAINT `fk_project_x_clients` FOREIGN KEY (`client_id`) REFERENCES `client_clients` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_project_x_statuses` FOREIGN KEY (`status_id`) REFERENCES `project_statuses` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_project_x_users` FOREIGN KEY (`created_by`) REFERENCES `user_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `project_tasks`
+--
+ALTER TABLE `project_tasks`
+  ADD CONSTRAINT `fk_task_x_project` FOREIGN KEY (`project_id`) REFERENCES `project_projects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_task_x_users` FOREIGN KEY (`assigned_to`) REFERENCES `user_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `user_profiles`
