@@ -22,7 +22,7 @@ class RegistrationController extends Controller{
                     'rules' => [
                         [
                             'actions' => ['registration', 'success'],
-                            'allow' => true,
+                            'allow' => false /* true */,    //Nincs szükség regisztrációra
                         ],
                     ],
                 ],
