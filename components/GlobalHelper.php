@@ -51,4 +51,23 @@ class GlobalHelper extends Component
 
         return $message->send();
     }
+
+    /**
+     * Árformázás
+     * @param $price float Ár
+     * @param $decimals int Tizedesjegyek
+     * @param $after string Valuta jel előtag
+     * @param $before string Valuta jel utótag
+     * @return string
+     */
+    public static function priceFormat($price, $decimals = 0, $after = 'Ft', $before = ''){
+          if($price == '') {
+            return '';
+        }
+
+        $beforeT = (!empty($before))? '<span class="currency before">' .$before. '</span>' : '';
+        $afterT = (!empty($after))? '<span class="currency after">' .$after. '</span>': '';
+
+        return $beforeT.number_format($price, $decimals, '.', ' ').' '.$afterT;
+    }
 }

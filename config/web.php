@@ -19,6 +19,9 @@ $config = [
         'users' => [
             'class' => 'app\modules\users\Usermodule',
         ],
+        'projects' => [
+            'class' => 'app\modules\projects\Projectmodule',
+        ],
     ],
     'components' => [
         'request' => [
@@ -69,7 +72,9 @@ $config = [
                 '' => 'site/index',
                 'bejelentkezes' => 'users/login/login',
                 'regisztracio' => 'users/registration/registration', 
-                'profilom' => 'users/profile/profile', 
+                'profilom' => 'users/profile/profile',
+
+                'projektek' => 'projects/project/index', 
             ],
         ],
        

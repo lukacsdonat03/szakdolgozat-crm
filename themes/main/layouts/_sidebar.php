@@ -20,8 +20,8 @@ use yii\helpers\Url;
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-briefcase me-2"></i> Projects
+        <a href="<?= Url::to(['/projects/project/index']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+          <i class="bi bi-briefcase me-2"></i> Projektek
         </a>
       </li>
       <li class="nav-item mb-2">
