@@ -17,8 +17,8 @@ $moduleId = GlobalHelper::getModuleId();
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-people me-2"></i> Clients
+        <a href="<?= Url::to(['/clients/client/index']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+          <i class="bi bi-people me-2"></i> Ügyfelek
         </a>
       </li>
       <li class="nav-item mb-2">
@@ -36,6 +36,11 @@ $moduleId = GlobalHelper::getModuleId();
           <li class="mb-2">
             <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/status/index']) ?>">
               <i class="bi bi-palette2"></i> Projekt státuszok
+            </a>
+          </li>
+          <li class="mb-2">
+            <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/tag/index']) ?>">
+             <i class="bi bi-tags"></i> Projekt tagek
             </a>
           </li>
         </ul>

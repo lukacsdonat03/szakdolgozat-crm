@@ -2,17 +2,16 @@
 
 namespace app\modules\projects\controllers;
 
-use app\modules\projects\models\Project;
-use app\modules\projects\models\search\ProjectSearch;
-use yii\filters\AccessControl;
+use app\modules\projects\models\Tag;
+use app\modules\projects\models\search\TagSearch;
 use app\base\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ProjectController implements the CRUD actions for Project model.
+ * TagController implements the CRUD actions for Tag model.
  */
-class ProjectController extends Controller
+class TagController extends Controller
 {
     /**
      * @inheritDoc
@@ -27,19 +26,19 @@ class ProjectController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                     ],
-                ]
+                ],
             ]
         );
     }
 
     /**
-     * Lists all Project models.
+     * Lists all Tag models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectSearch();
+        $searchModel = new TagSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,30 +48,16 @@ class ProjectController extends Controller
     }
 
     /**
-     * Displays a single Project model.
-     * @param int $id Azonosító
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Project model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Creates a new Tag model.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Project();
+        $model = new Tag();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['update', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -84,8 +69,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Updates an existing Project model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Updates an existing Tag model.
      * @param int $id Azonosító
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
@@ -95,7 +79,7 @@ class ProjectController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -104,7 +88,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Deletes an existing Project model.
+     * Deletes an existing Tag model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id Azonosító
      * @return \yii\web\Response
@@ -118,15 +102,15 @@ class ProjectController extends Controller
     }
 
     /**
-     * Finds the Project model based on its primary key value.
+     * Finds the Tag model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id Azonosító
-     * @return Project the loaded model
+     * @return Tag the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Project::findOne(['id' => $id])) !== null) {
+        if (($model = Tag::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

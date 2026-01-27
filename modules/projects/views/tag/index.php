@@ -1,26 +1,25 @@
 <?php
 
-use app\modules\projects\models\Status;
+use app\modules\projects\models\Tag;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\modules\projects\models\search\StatusSearch $searchModel */
+/** @var app\modules\projects\models\search\TagSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Projekt státuszok';
+$this->title = 'Projekt tagek';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="status-index">
+<div class="tag-index">
 
     <p>
-        <?= Html::a('Létrehozás', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Létrehoz', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); 
-    ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'contentOptions' => ['class' => 'text-center'],
                 'value' => function ($model) {
-                    return '<span class="badge p-1 w-100 mx-auto" style="background-color:' . (!empty($model->color_code) ? $model->color_code : '#000') . '">&nbsp;</span>';
+                    return '<span class="badge p-1 w-100     mx-auto" style="background-color:' . (!empty($model->color_code) ? $model->color_code : '#000') . '">&nbsp;</span>';
                 },
-                'filter' => false
+                'filter' => false,
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

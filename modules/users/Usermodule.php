@@ -6,6 +6,7 @@ use app\components\Constants;
 use app\components\GlobalHelper;
 use app\modules\users\models\User;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * user module definition class
@@ -111,6 +112,22 @@ class Usermodule extends \yii\base\Module
             return ($user->rights == self::RIGHT_ADMIN);
         }
         return false;
+    }
+
+    public static function getNamesForSelect()
+    {
+        $models = User::find()
+            ->alias('u')
+            ->joinWith(['profile p'], false) 
+            ->where(['u.status' => self::STATUS_ACTIVE])
+            ->select(['u.id', 'name' => 'p.name']) 
+            ->asArray() 
+            ->all();
+
+        $result = ArrayHelper::map($models, 'id', 'name');
+
+        asort($result); 
+        return $result;
     }
 }
 

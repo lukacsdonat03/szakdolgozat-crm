@@ -2,9 +2,11 @@
 
 namespace app\modules\projects\models;
 
+use app\modules\clients\models\Client;
 use app\modules\users\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "project_projects".
@@ -24,12 +26,13 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Client $client
  * @property User $createdBy
- * @property ProjectTasks[] $projectTasks
+ * @property Task[] $projectTasks
  * @property Status $status
  */
 class Project extends \yii\db\ActiveRecord
 {
 
+    public $taglist = [];
 
     /**
      * {@inheritdoc}
@@ -50,7 +53,7 @@ class Project extends \yii\db\ActiveRecord
             [['client_id', 'name', 'start_date', 'deadline'], 'required'],
             [['client_id', 'status_id', 'priority', 'created_by'], 'integer'],
             [['description'], 'string'],
-            [['start_date', 'deadline', 'created_at', 'updated_at'], 'safe'],
+            [['start_date', 'deadline', 'created_at', 'updated_at', 'taglist'], 'safe'],
             [['budget'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::class, 'targetAttribute' => ['client_id' => 'id']],
@@ -77,6 +80,7 @@ class Project extends \yii\db\ActiveRecord
             'created_by' => 'Létrehozta',
             'created_at' => 'Létrehozva',
             'updated_at' => 'Módosítva',
+            'taglist' => 'Tagek',
         ];
     }
 
@@ -89,7 +93,7 @@ class Project extends \yii\db\ActiveRecord
                     'class' => TimestampBehavior::class,
                     'createdAtAttribute' => 'created_at',
                     'updatedAtAttribute' => 'updated_at',
-                    'value' => function(){
+                    'value' => function () {
                         return date('Y-m-d H:i:s');
                     }
                 ]
@@ -100,13 +104,60 @@ class Project extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
 
-        if(parent::beforeSave($insert)){
+        if (parent::beforeSave($insert)) {
 
             $this->created_by = Yii::$app->user->id;
 
             return true;
         }
         return false;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if (!isset($this->taglist)) {
+            return;
+        }
+
+        $newTagIds = array_filter((array)$this->taglist);
+
+        $currentTagIds = ProjectTagRelation::find()
+            ->select('tag_id')
+            ->where(['project_id' => $this->id])
+            ->column();
+
+        $toDelete = array_diff($currentTagIds, $newTagIds);
+        if (!empty($toDelete)) {
+            ProjectTagRelation::deleteAll([
+                'project_id' => $this->id,
+                'tag_id' => $toDelete
+            ]);
+        }
+
+        $toAdd = array_diff($newTagIds, $currentTagIds);
+        if (!empty($toAdd)) {
+            $rows = [];
+            foreach ($toAdd as $tagId) {
+                $rows[] = [$this->id, $tagId];
+            }
+            Yii::$app->db->createCommand()
+                ->batchInsert(
+                    ProjectTagRelation::tableName(),
+                    ['project_id', 'tag_id'],
+                    $rows
+                )
+                ->execute();
+        }
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->taglist = ArrayHelper::getColumn($this->tags,'tag_id');
+
     }
 
     /**
@@ -124,7 +175,7 @@ class Project extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
+    public function getCreatedbyuser()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
@@ -136,7 +187,7 @@ class Project extends \yii\db\ActiveRecord
      */
     public function getProjectTasks()
     {
-        return $this->hasMany(ProjectTasks::class, ['project_id' => 'id']);
+        return $this->hasMany(Task::class, ['project_id' => 'id']);
     }
 
     /**
@@ -149,4 +200,11 @@ class Project extends \yii\db\ActiveRecord
         return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
+    public function getTags(){
+        return $this->hasMany(ProjectTagRelation::class,['project_id' => 'id']);
+    }
+
+    public function getTagitems(){
+        return $this->hasMany(Tag::class,['id' => 'tag_id'])->via('tags');
+    }
 }

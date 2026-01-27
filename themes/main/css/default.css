@@ -52,3 +52,17 @@ img{
 .control-label{
     margin-bottom: 0.2rem;
 }
+
+.help-block{
+    margin-top: 5px;
+    color: #dc3545;
+    font-weight: 700;
+}
+
+.cke_notifications_area{
+    display: none !important;
+}
+
+.select2-container--krajee-bs5 .select2-results__option--highlighted[aria-selected]{
+    background-color: var(--color-primary);
+}

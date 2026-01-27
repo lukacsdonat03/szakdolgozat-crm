@@ -1,8 +1,10 @@
 <?php
 
+use app\modules\clients\models\Client;
 use app\modules\projects\models\Project;
 use app\modules\projects\models\Status;
 use app\modules\projects\Projectmodule;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -27,7 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',
-            'client_id',
+            [
+                'attribute' => 'client_id',
+                'format' => 'raw',
+                'value' => function ($model){
+                    return !empty($model->client) ? $model->client->name : 'Nincs beállítva';
+                },
+                'filter' => Html::activeDropDownList($searchModel,'client',Client::getListForSelect(),['class'=>'form-select','prompt' => '']),
+            ],
             [
                 'attribute' => 'status_id',
                 'format' => 'raw',
@@ -46,7 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'start_date',
             'deadline',
-            'created_by',
+            [
+                'attribute' => 'created_by',
+                'format' => 'raw',
+                'value' => function ($model){
+                    return !empty($model->createdbyuser) ? $model->createdbyuser->profile->name : 'Nincs beállítva';
+                },
+                'filter' => Html::activeDropDownList($searchModel,'created_by',Usermodule::getNamesForSelect(),['class'=>'form-select','prompt' => '']),
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Project $model, $key, $index, $column) {

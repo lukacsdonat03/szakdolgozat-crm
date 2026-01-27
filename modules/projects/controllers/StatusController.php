@@ -5,7 +5,7 @@ namespace app\modules\projects\controllers;
 use app\modules\projects\models\Status;
 use app\modules\projects\models\search\StatusSearch;
 use yii\filters\AccessControl;
-use yii\web\Controller;
+use app\base\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -21,18 +21,6 @@ class StatusController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            'actions' => ['index','create','update','delete'],
-                            'allow' => true,
-                            'roles' => ['@']
-                        ]
-                    ]
-                ],
-            ],
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),
@@ -63,7 +51,6 @@ class StatusController extends Controller
 
     /**
      * Creates a new Status model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
@@ -85,7 +72,6 @@ class StatusController extends Controller
 
     /**
      * Updates an existing Status model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id Azonosító
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found

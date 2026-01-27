@@ -22,6 +22,9 @@ $config = [
         'projects' => [
             'class' => 'app\modules\projects\Projectmodule',
         ],
+        'clients' => [
+            'class' => 'app\modules\clients\Clientmodule',
+        ],
     ],
     'components' => [
         'request' => [
