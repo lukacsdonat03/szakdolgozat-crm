@@ -1,5 +1,7 @@
 <?php
 
+use app\modules\projects\models\Status;
+use app\modules\projects\Projectmodule;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,9 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status_id')->textInput() ?>
+    <?= $form->field($model, 'status_id')->dropDownList(Status::getListForSelect(false,'id','name','id')) ?>
 
-    <?= $form->field($model, 'priority')->textInput() ?>
+    <?= $form->field($model, 'priority')->dropDownList(Projectmodule::getPriorities()) ?>
 
     <?= $form->field($model, 'start_date')->textInput() ?>
 

@@ -1,6 +1,8 @@
 <?php
 
 use app\modules\projects\models\Project;
+use app\modules\projects\models\Status;
+use app\modules\projects\Projectmodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -26,8 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'name',
             'client_id',
-            'status_id',
-            'priority',
+            [
+                'attribute' => 'status_id',
+                'format' => 'raw',
+                'value' => function ($model){
+                    return !empty($model->status) ? $model->status->name : 'Nincs beállítva';
+                },
+                'filter' => Html::activeDropDownList($searchModel,'status_id',Status::getListForSelect(false,'id','name','id'),['class'=>'form-select','prompt' => '']),
+            ],
+            [
+                'attribute' => 'priority',
+                'format' => 'raw',
+                'value' => function ($model){
+                    return isset($model->priority) ? Projectmodule::getPriorities($model->priority) : 'Nincs beállítva';
+                },
+                'filter' => Html::activeDropDownList($searchModel,'priority',Projectmodule::getPriorities(),['class'=>'form-select','prompt' => '']),
+            ],
             'start_date',
             'deadline',
             'created_by',

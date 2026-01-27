@@ -1,8 +1,10 @@
 <?php
 
+use app\components\GlobalHelper;
 use app\modules\users\Usermodule;
 use yii\helpers\Url;
 
+$moduleId = GlobalHelper::getModuleId();
 ?>
 
 <nav id="sidebar" class="d-flex flex-column bg-white active border-end vh-100 position-fixed">
@@ -20,9 +22,23 @@ use yii\helpers\Url;
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a href="<?= Url::to(['/projects/project/index']) ?>" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-briefcase me-2"></i> Projektek
+        <a href="#projectSubmenu" class="nav-link anim text-dark d-flex align-items-center justify-content-between"
+          data-bs-toggle="collapse" aria-expanded="<?= ($moduleId == 'projects') ? 'true' : 'false' ?>">
+          <span><i class="bi bi-briefcase me-2"></i> Projektek</span>
+          <i class="bi bi-chevron-down transition-transform"></i>
         </a>
+        <ul class="collapse list-unstyled ps-4 <?= ($moduleId == 'projects') ? 'show' : '' ?>" id="projectSubmenu">
+          <li class="mb-2">
+            <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/project/index']) ?>">
+              <i class="bi bi-list-ul me-2"></i> Összes projekt
+            </a>
+          </li>
+          <li class="mb-2">
+            <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/status/index']) ?>">
+              <i class="bi bi-palette2"></i> Projekt státuszok
+            </a>
+          </li>
+        </ul>
       </li>
       <li class="nav-item mb-2">
         <a href="#" class="nav-link anim text-dark d-flex align-items-center">
@@ -30,19 +46,21 @@ use yii\helpers\Url;
         </a>
       </li>
       <?php if (Usermodule::hasAdminRole()): ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle anim text-dark d-flex align-items-center" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-gear me-2"></i> Admin
+        <li class="nav-item mb-2">
+          <a href="#adminSubmenu" class="nav-link anim text-dark d-flex align-items-center justify-content-between"
+            data-bs-toggle="collapse" aria-expanded="<?= ($moduleId == 'users') ? 'true' : 'false' ?>">
+            <span><i class="bi bi-gear me-2"></i> Admin</span>
+            <i class="bi bi-chevron-down transition-transform"></i>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-            <li>
-              <a class="dropdown-item" href="<?= Url::to(['/users/user/index']) ?>">
-                Felhasználók
+          <ul class="collapse list-unstyled ps-4 <?= ($moduleId == 'users') ? 'show' : '' ?>" id="adminSubmenu">
+            <li class="mb-2">
+              <a class="nav-link anim text-dark" href="<?= Url::to(['/users/user/index']) ?>">
+                <i class="bi bi-person-circle me-2"></i> Felhasználók
               </a>
             </li>
-            <li>
-              <a class="dropdown-item" href="<?= Url::to(['/users/position/index']) ?>">
-                Szerepkörök
+            <li class="mb-2">
+              <a class="nav-link anim text-dark" href="<?= Url::to(['/users/position/index']) ?>">
+                <i class="bi bi-award me-2"></i> Szerepkörök
               </a>
             </li>
           </ul>

@@ -12,3 +12,7 @@
     background: var(--color-secondary);
     color: #fff;
 }
+.hint-block{
+    color: #666464;
+    margin-top: 5px;
+}

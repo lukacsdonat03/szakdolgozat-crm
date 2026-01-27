@@ -25,7 +25,7 @@ use yii\behaviors\TimestampBehavior;
  * @property Client $client
  * @property User $createdBy
  * @property ProjectTasks[] $projectTasks
- * @property ProjectStatuses $status
+ * @property Status $status
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -54,7 +54,7 @@ class Project extends \yii\db\ActiveRecord
             [['budget'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::class, 'targetAttribute' => ['client_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProjectStatuses::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
         ];
     }
@@ -146,7 +146,7 @@ class Project extends \yii\db\ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(ProjectStatuses::class, ['id' => 'status_id']);
+        return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
 }

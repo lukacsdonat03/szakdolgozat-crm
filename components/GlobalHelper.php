@@ -70,4 +70,12 @@ class GlobalHelper extends Component
 
         return $beforeT.number_format($price, $decimals, '.', ' ').' '.$afterT;
     }
+
+    public static function isMenuOpened($module){
+        return (Yii::$app->controller->module->id == $module);
+    }
+
+    public static function getModuleId(){
+        return Yii::$app->controller->module->id;
+    }
 }

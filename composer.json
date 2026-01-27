@@ -21,7 +21,8 @@
         "kartik-v/yii2-widget-alert": "^1.1",
         "twbs/bootstrap-icons": "^1.13",
         "kartik-v/yii2-password": "^1.5",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "kartik-v/yii2-widget-colorinput": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
