@@ -5,6 +5,7 @@ namespace app\modules\projects\controllers;
 use app\modules\projects\models\Tag;
 use app\modules\projects\models\search\TagSearch;
 use app\base\Controller;
+use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -57,7 +58,10 @@ class TagController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                AppAlert::addSuccessAlert('Sikeres mentés!');
                 return $this->redirect(['index']);
+            }else{
+                AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
         } else {
             $model->loadDefaultValues();
@@ -79,6 +83,7 @@ class TagController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            AppAlert::addSuccessAlert('Sikeres mentés');
             return $this->redirect(['index']);
         }
 

@@ -5,6 +5,7 @@ namespace app\modules\clients\controllers;
 use app\modules\clients\models\Client;
 use app\modules\clients\models\search\ClientSearch;
 use app\base\Controller;
+use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -70,7 +71,10 @@ class ClientController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                AppAlert::addSuccessAlert('Sikeres mentés!');
                 return $this->redirect(['index']);
+            }else{
+                AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
         } else {
             $model->loadDefaultValues();

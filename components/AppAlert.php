@@ -19,8 +19,8 @@ class AppAlert extends Alert
      * ]);
      */
 
-    const ICON_INFO = "fa-solid fa-circle-info";
-    const ICON_ALERT = "fa-solid fa-circle-exclamation";
+    const ICON_INFO = "bi bi-info-circle-fill";
+    const ICON_ALERT = "bi bi-exclamation-circle-fill";
 
     /**
      * Új alert felvétele

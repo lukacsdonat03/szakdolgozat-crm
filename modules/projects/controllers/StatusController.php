@@ -6,6 +6,7 @@ use app\modules\projects\models\Status;
 use app\modules\projects\models\search\StatusSearch;
 use yii\filters\AccessControl;
 use app\base\Controller;
+use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -59,7 +60,10 @@ class StatusController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                AppAlert::addSuccessAlert('Sikeres mentés!');
                 return $this->redirect(['index']);
+            }else{
+                AppAlert::addErrorAlert('Hiba történt mentés közben!');
             }
         } else {
             $model->loadDefaultValues();
@@ -81,6 +85,7 @@ class StatusController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            AppAlert::addSuccessAlert('Sikeres mentés!');
             return $this->redirect(['index']);
         }
 

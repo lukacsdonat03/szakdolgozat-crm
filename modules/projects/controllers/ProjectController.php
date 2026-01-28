@@ -6,6 +6,7 @@ use app\modules\projects\models\Project;
 use app\modules\projects\models\search\ProjectSearch;
 use yii\filters\AccessControl;
 use app\base\Controller;
+use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -72,7 +73,10 @@ class ProjectController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                AppAlert::addSuccessAlert('Sikeres mentés!');
                 return $this->redirect(['update', 'id' => $model->id]);
+            }else{    
+                    AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
         } else {
             $model->loadDefaultValues();
@@ -95,6 +99,7 @@ class ProjectController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            AppAlert::addSuccessAlert('Sikeres mentés!');
             return $this->redirect(['update', 'id' => $model->id]);
         }
 
@@ -113,7 +118,7 @@ class ProjectController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        
         return $this->redirect(['index']);
     }
 

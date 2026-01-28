@@ -5,6 +5,7 @@ namespace app\modules\projects\controllers;
 use app\modules\projects\models\Task;
 use app\modules\projects\models\search\TaskSearch;
 use app\base\Controller;
+use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -71,7 +72,10 @@ class TaskController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                AppAlert::addSuccessAlert('Sikeres mentés!');
                 return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
         } else {
             $model->loadDefaultValues();
