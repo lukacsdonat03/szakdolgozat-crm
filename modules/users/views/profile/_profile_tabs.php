@@ -6,6 +6,7 @@ use app\modules\users\models\Profile;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\MaskedInput;
 
 /**
  * @var User $user
@@ -77,7 +78,12 @@ use yii\widgets\DetailView;
 
         <?= $form->field($profile, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($profile, 'phone')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($profile, 'phone')->widget(MaskedInput::class,[
+            'mask' => '+36999999999',
+            'options' => [
+                'maxlength' => true,
+            ]
+        ]) ?>
 
         <div class="text-center text-lg-end">
             <?= Html::submitButton('Profil módosítása', ['class' => 'btn btn-crm', 'name' => 'password-button']) ?>

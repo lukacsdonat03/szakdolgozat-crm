@@ -4,6 +4,7 @@ use app\modules\users\models\Position;
 use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /** @var yii\web\View $this */
 /** @var app\modules\users\models\User $model */
@@ -20,7 +21,12 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($profile, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($profile, 'phone')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($profile, 'phone')->widget(MaskedInput::class,[
+        'mask' => '+36999999999',
+        'options' => [
+            'maxlength' => true,
+        ]
+    ]) ?>
 
     <?= $form->field($model, 'new_password')->widget(
         \kartik\password\PasswordInput::classname()
