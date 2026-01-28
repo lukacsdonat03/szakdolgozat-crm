@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var app\modules\projects\models\Tag $model */
 
 $this->title = 'Létrehoz';
-$this->params['breadcrumbs'][] = ['label' => 'Projekt tagek', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Projekt címkék', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tag-create">

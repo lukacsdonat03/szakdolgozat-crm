@@ -40,7 +40,7 @@ $moduleId = GlobalHelper::getModuleId();
           </li>
           <li class="mb-2">
             <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/tag/index']) ?>">
-             <i class="bi bi-tags"></i> Projekt tagek
+             <i class="bi bi-tags"></i> Projekt címkék
             </a>
           </li>
         </ul>

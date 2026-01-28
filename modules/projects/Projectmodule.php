@@ -37,4 +37,20 @@ class Projectmodule extends \yii\base\Module
             ? $options[$item] 
             : $options;  
     }
+
+    public static function getPriorityClass($item = false)
+    {
+        $options = [
+            self::PRIORITY_LOW => 'secondary',
+            self::PRIORITY_MEDIUM => 'info',
+            self::PRIORITY_HIGH => 'warning',
+            self::PRIORITY_SOS => 'danger',
+        ];
+        if(!isset($options[$item])){
+            return 'secondary';
+        }
+        return ($item !== false)
+            ? $options[$item]
+            : $options;
+    }
 }

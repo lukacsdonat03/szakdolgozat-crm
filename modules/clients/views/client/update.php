@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Módosítás: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Ügyfelek', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Módosítás';
 ?>
 <div class="client-update">
 

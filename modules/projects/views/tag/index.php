@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\modules\projects\models\search\TagSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Projekt tagek';
+$this->title = 'Projekt címkék';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tag-index">

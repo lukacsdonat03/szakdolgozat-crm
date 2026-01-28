@@ -80,7 +80,7 @@ class Project extends \yii\db\ActiveRecord
             'created_by' => 'Létrehozta',
             'created_at' => 'Létrehozva',
             'updated_at' => 'Módosítva',
-            'taglist' => 'Tagek',
+            'taglist' => 'Címkék',
         ];
     }
 
