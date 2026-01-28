@@ -3,11 +3,11 @@
 use app\modules\users\models\Position;
 use app\modules\users\Usermodule;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\modules\users\models\User $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var yii\bootstrap5\ActiveForm; $form */
 ?>
 
 <div class="user-form">

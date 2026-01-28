@@ -6,12 +6,12 @@ use app\modules\projects\models\Tag;
 use app\modules\projects\Projectmodule;
 use kartik\select2\Select2;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use kartik\date\DatePicker;
 
 /** @var yii\web\View $this */
 /** @var app\modules\projects\models\Project $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var yii\bootstrap5\ActiveForm $form */
 
 ?>
 

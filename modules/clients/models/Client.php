@@ -41,6 +41,7 @@ class Client extends \app\base\Model
             [['name', 'company', 'email', 'phone'], 'required'],
             [['name', 'email', 'address'], 'string', 'max' => 126],
             [['company'], 'string', 'max' => 255],
+            [['email'],'email'],
             [['phone', 'tax_number'], 'string', 'max' => 32],
             [['notes'], 'string', 'max' => 512],
         ];
