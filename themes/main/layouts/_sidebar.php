@@ -34,6 +34,11 @@ $moduleId = GlobalHelper::getModuleId();
             </a>
           </li>
           <li class="mb-2">
+            <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/task/index']) ?>">
+              <i class="bi bi-journal-bookmark-fill me-2"></i> Feladatok
+            </a>
+          </li>
+          <li class="mb-2">
             <a class="nav-link anim text-dark" href="<?= Url::to(['/projects/status/index']) ?>">
               <i class="bi bi-palette2"></i> Projekt státuszok
             </a>

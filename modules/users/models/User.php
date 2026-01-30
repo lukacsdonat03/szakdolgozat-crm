@@ -176,6 +176,28 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return (!empty($user))?$user:null;
     }
 
+    /**
+     * @param int $id - Felhasználó azonosítója
+     * @return array
+     */
+    public static function getNamesForSelect($id = false){
+        $result = [];
+        $users = self::find()
+            ->where(['status' => Usermodule::STATUS_ACTIVE])
+            ->all();
+
+        if(!empty($users)){
+            foreach($users as $user){
+                $profile = $user->profile;
+                if(!empty($profile)){
+                    $result[$user->id] = $profile->name ?? $user->username;
+                }
+            }
+        }
+
+        return (!empty($id) && !empty($result[$id])) ? $result[$id] : $result;
+    }
+
     public function getPosition(){
          return $this->hasOne(Position::class, ['id' => 'position_id'])
             ->via('profile');

@@ -4,6 +4,7 @@ namespace app\modules\clients\models;
 
 use app\modules\projects\models\Project;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "client_clients".
@@ -72,6 +73,31 @@ class Client extends \app\base\Model
     public function getProjectProjects()
     {
         return $this->hasMany(Project::class, ['client_id' => 'id']);
+    }
+
+    public static function getClientsForSelect($addEmpty = false, $order = false)
+    {
+        $result = [];
+        $query = static::find();
+        if(!empty($order)){
+            $query->orderBy([$order => SORT_ASC]);
+        }else{
+            $query->orderBy(['name' => SORT_ASC]);
+        }
+        
+        $items = $query->all();
+        if(!empty($items)){
+            foreach($items as $item){
+                $postfix = !empty($item->company) ? " (". $item->company .") " : "";
+                $result[$item->id] = $item->name . $postfix;
+            }
+        }
+
+        if($addEmpty === true){
+            $result = ArrayHelper::merge([0 => 'Nincs'],$result);
+        }
+
+        return $result;
     }
 
 }

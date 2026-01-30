@@ -2,6 +2,7 @@
 
 namespace app\modules\projects\models;
 
+use app\base\Model;
 use app\modules\clients\models\Client;
 use app\modules\users\models\User;
 use Yii;
@@ -29,7 +30,7 @@ use yii\helpers\ArrayHelper;
  * @property Task[] $projectTasks
  * @property Status $status
  */
-class Project extends \yii\db\ActiveRecord
+class Project extends Model
 {
 
     public $taglist = [];

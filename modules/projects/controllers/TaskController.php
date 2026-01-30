@@ -56,14 +56,18 @@ class TaskController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $project = $model->project;
+        $client = !empty($project) ? $project->client : null;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'project' => $project,
+            'client' => $client
         ]);
     }
 
     /**
      * Creates a new Task model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
@@ -73,7 +77,7 @@ class TaskController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 AppAlert::addSuccessAlert('Sikeres mentés!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }else{
                 AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
@@ -88,7 +92,6 @@ class TaskController extends Controller
 
     /**
      * Updates an existing Task model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id Azonosító
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
@@ -98,7 +101,7 @@ class TaskController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

@@ -23,7 +23,7 @@ use kartik\date\DatePicker;
         <div class="col-sm-6"><?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?></div>
 
         <div class="col-sm-6"><?= $form->field($model, 'client_id')->widget(Select2::class,[
-            'data' => Client::getListForSelect(),
+            'data' => Client::getClientsForSelect(),
             'pluginOptions' => [
                 'multiple' => false,
             ]
@@ -52,6 +52,7 @@ use kartik\date\DatePicker;
                 'options' => ['placeholder' => 'Kezdés ...'],
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'todayHighlight' => true,
                 ],
                 'removeIcon' => '<i class="bi bi-x-lg"></i>',
                 'pickerIcon' => '<i class="bi bi-calendar3"></i>',
@@ -62,6 +63,7 @@ use kartik\date\DatePicker;
                 'options' => ['placeholder' => 'Határidő ...'],
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'todayHighlight' => true,
                 ],
                 'removeIcon' => '<i class="bi bi-x-lg"></i>',
                 'pickerIcon' => '<i class="bi bi-calendar3"></i>',

@@ -85,8 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <label><i class="bi bi-exclamation-triangle"></i> Prioritás</label>
                         <div class="value">
                             <?php if (isset($model->priority)): ?>
-                                <?php
-                                ?>
                                 <span class="badge bg-<?= Projectmodule::getPriorityClass($model->priority) ?>">
                                     <?= Html::encode(Projectmodule::getPriorities($model->priority)) ?>
                                 </span>

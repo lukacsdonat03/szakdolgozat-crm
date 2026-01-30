@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'client_id',
                 'format' => 'raw',
                 'value' => function ($model){
-                    return !empty($model->client) ? $model->client->name : 'Nincs beállítva';
+                    return !empty($model->client) ? $model->client->name .(!empty($model->client->company) ? ('('.$model->client->company.')') : '') : 'Nincs beállítva';
                 },
-                'filter' => Html::activeDropDownList($searchModel,'client',Client::getListForSelect(),['class'=>'form-select','prompt' => '']),
+                'filter' => Html::activeDropDownList($searchModel,'client',Client::getClientsForSelect(),['class'=>'form-select','prompt' => '']),
             ],
             [
                 'attribute' => 'status_id',
