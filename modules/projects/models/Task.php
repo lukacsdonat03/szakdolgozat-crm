@@ -156,4 +156,8 @@ class Task extends Model
         $user = User::find()->where(['id' => $this->created_by])->one();
         return (!empty($user) && !empty($user->profile)) ? $user->profile->name : 'Nincs beállítva';
     }
+
+    public function getSchedule(){
+        return $this->hasOne(Schedule::class,['task_id' => 'id']);
+    }
 }

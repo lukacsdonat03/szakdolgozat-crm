@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\modules\projects\models\Task $model */
+/** @var app\modules\projects\models\Schedule $schedule */
 
 $this->title = 'Létrehozás';
 $this->params['breadcrumbs'][] = ['label' => 'Feladatok', 'url' => ['index']];
@@ -13,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'schedule' => $schedule,
     ]) ?>
 
 </div>

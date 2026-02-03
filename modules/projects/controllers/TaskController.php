@@ -6,8 +6,12 @@ use app\modules\projects\models\Task;
 use app\modules\projects\models\search\TaskSearch;
 use app\base\Controller;
 use app\components\AppAlert;
+use app\components\GlobalHelper;
+use app\modules\projects\models\Schedule;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\Response;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -30,6 +34,35 @@ class TaskController extends Controller
                 ],
             ]
         );
+    }
+    
+    public function actionViewAjax($id){
+        $model = $this->findModel($id);
+        
+        $this->response = Response::FORMAT_JSON;
+
+        return $this->renderPartial('@app/modules/projects/views/task/_view_modal',['model' => $model]);
+    }
+
+    public function actionCalendarData($start = null, $end = null){
+        $this->response->format = Response::FORMAT_JSON;
+
+        $schedules = Schedule::getSchedulesByDates($start,$end);
+        $events = [];
+
+        if (!empty($schedules)) {
+          foreach ($schedules as $schedule) {
+                foreach ($schedule->getArrayForCalendar() as $event) {
+                    $events[] = $event;
+                }
+            }
+        }
+
+        return $events;
+    }
+
+    public function actionCalendar(){
+        return $this->render('calendar');
     }
 
     /**
@@ -73,11 +106,17 @@ class TaskController extends Controller
     public function actionCreate()
     {
         $model = new Task();
+        $schedule = new Schedule();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                AppAlert::addSuccessAlert('Sikeres mentés!');
-                return $this->redirect(['index']);
+                if($schedule->load($this->request->post())){
+                    $schedule->task_id = $model->id;
+                    if($schedule->save()){
+                        AppAlert::addSuccessAlert('Sikeres mentés!');
+                        return $this->redirect(['index']);
+                    }
+                }
             }else{
                 AppAlert::addErrorAlert('Hiba történt mentés közben...');
             }
@@ -87,6 +126,7 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'schedule' => $schedule,
         ]);
     }
 
@@ -99,13 +139,20 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $schedule = $model->schedule;
+        if(empty($schedule)){
+            $schedule = new Schedule();
+            $schedule->task_id = $model->id;
+        }
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save() && $schedule->load($this->request->post()) && $schedule->save()) {
+            AppAlert::addSuccessAlert('Sikeres mentés');
             return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'schedule' => $schedule,
         ]);
     }
 

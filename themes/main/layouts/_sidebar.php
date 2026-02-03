@@ -12,6 +12,11 @@ $moduleId = GlobalHelper::getModuleId();
     <h5 class="mb-4 text-uppercase text-muted">Menü</h5>
     <ul class="nav flex-column">
       <li class="nav-item mb-2">
+        <a href="<?= Url::to(['/projects/task/calendar']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+          <i class="bi bi-calendar-range-fill me-2"></i> Naptár
+        </a>
+      </li>
+      <li class="nav-item mb-2">
         <a href="#" class="nav-link anim text-dark d-flex align-items-center">
           <i class="bi bi-house me-2"></i> Dashboard
         </a>

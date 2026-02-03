@@ -213,6 +213,33 @@
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+.fc-scrollgrid-sync-inner{
+    padding: 10px;
+}
+.fc .fc-col-header-cell-cushion{
+    font-size: 14px;
+}
+.tab-content.no-decoration{
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.fc .fc-button-primary{
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    transition: all .2s ease-in-out;
+    box-shadow: none !important;
+}
+.fc .fc-button-primary:disabled{
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    cursor: not-allowed !important;
+}
+.fc .fc-button-primary:not(:disabled):hover{
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
 
 @media(max-width: 576px){
     .client-avatar-wrapper,.project-avatar-wrapper,.task-avatar-wrapper{
