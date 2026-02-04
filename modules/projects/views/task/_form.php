@@ -127,12 +127,17 @@ use yii\bootstrap5\ActiveForm;
             </span>
             <div class="row">
                 <div class="col-sm-6">
-                    <?= $form->field($schedule,'start_date')->widget(DatePicker::class,[
+                    <?= $form->field($schedule,'start_date')->widget(DateTimePicker::class,[
                         'options' => ['placeholder' => 'Kezdés ...'],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
                             'startDate' => 'today',
+                            'hoursDisabled' => '0,1,2,3,4,5,6,7,16,17,18,19,20,21,22,23,24',
+                            'format' => 'yyyy-mm-dd hh:ii', 
+                            'minView' => 0, 
+                            'startView' => 2,
+                            'startDate' => date('Y-m-d H:i:s'),
                         ],
                         'removeIcon' => '<i class="bi bi-x-lg"></i>',
                         'pickerIcon' => '<i class="bi bi-calendar3"></i>',

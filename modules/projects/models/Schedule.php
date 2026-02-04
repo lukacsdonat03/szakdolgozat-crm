@@ -109,7 +109,7 @@ class Schedule extends \app\base\Model
     protected function calculateEventTimes($dayOffset, $totalDays){
 
         $hoursPerDay = $totalDays > 0 ? ($this->task->estimated_hours / $totalDays) : 0;
-        $startTime = date('Y-m-d 08:00:00', strtotime($this->start_date . " +{$dayOffset} days"));
+        $startTime = date('Y-m-d H:i:s', strtotime($this->start_date . " +{$dayOffset} days"));
         $endTime = date('Y-m-d H:i:s', strtotime($startTime . " +{$hoursPerDay} hours"));
 
         return [
