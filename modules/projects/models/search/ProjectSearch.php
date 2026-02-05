@@ -64,13 +64,20 @@ class ProjectSearch extends Project
             'client_id' => $this->client_id,
             'status_id' => $this->status_id,
             'priority' => $this->priority,
-            'start_date' => $this->start_date,
-            'deadline' => $this->deadline,
             'budget' => $this->budget,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+
+        if ($this->start_date) {
+            $this->start_date = str_replace('.','-',$this->start_date);
+            $query->andFilterWhere(['like', 'start_date', $this->start_date]);
+        }
+        if ($this->deadline) {
+            $this->deadline = str_replace('.','-',$this->deadline);
+            $query->andFilterWhere(['like', 'deadline', $this->deadline]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description]);

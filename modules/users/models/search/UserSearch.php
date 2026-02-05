@@ -61,9 +61,13 @@ class UserSearch extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'registration_date' => $this->registration_date,
             'status' => $this->status,
         ]);
+
+        if ($this->registration_date) {
+            $this->registration_date = str_replace('.','-',$this->registration_date);
+            $query->andFilterWhere(['like', 'registration_date', $this->registration_date]);
+        }
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])

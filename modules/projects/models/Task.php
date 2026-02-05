@@ -6,6 +6,7 @@ use app\base\Model;
 use app\components\GlobalHelper;
 use app\modules\users\models\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "project_tasks".
@@ -88,6 +89,22 @@ class Task extends Model
         ];
     }
 
+    public function behaviors(){
+        return array_merge(
+            parent::behaviors(),
+            [
+                [
+                    'class' => TimestampBehavior::class,
+                    'createdAtAttribute' => 'created_at',
+                    'updatedAtAttribute' => 'updated_at',
+                    'value' => function () {
+                        return date('Y-m-d H:i:s');
+                    }
+                ]
+            ]
+        );
+    }
+    
     public function beforeSave($insert)
     {
         if(parent::beforeSave($insert)){

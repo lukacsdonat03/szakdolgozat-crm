@@ -53,6 +53,7 @@ use yii\bootstrap5\ActiveForm;
                         'options' => ['placeholder' => 'Feladat hozzárendelve...'],
                         'pluginOptions' => [
                             'multiple' => false,
+                            'allowClear' => true,
                         ],
                     ]) ?>
                 </div>
