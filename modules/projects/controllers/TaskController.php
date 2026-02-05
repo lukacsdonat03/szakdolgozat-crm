@@ -35,7 +35,54 @@ class TaskController extends Controller
             ]
         );
     }
+
+    public function beforeAction($action)
+    {
+
+        if (in_array($action->id, ['ajax-update'])) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
     
+    public function actionAjaxUpdate(){
+        
+        if(!$this->request->isAjax){
+            throw new BadRequestHttpException('Nem AJAX kérés');
+        }
+
+        $this->response->format = Response::FORMAT_JSON;
+
+        $postData = $this->request->post();
+        
+        $status = $postData['status'] ?? null;
+        $asignedTo = $postData['asigned'] ?? null;
+        $modelId = $postData['id'] ?? 0;
+        $model = $this->findModel($modelId);
+        if(!empty($model)){
+            $change = [];
+            if(isset($status)){
+                $change['status'] = $status;
+            }
+            if(isset($asignedTo)){
+                $change['assigned_to'] = $asignedTo;
+            }
+            if(!empty($change)){
+                Task::updateAll($change,['id' => $modelId]);
+            }
+
+            return [
+                'success' => true,
+                'msg' => 'Sikeres mentés',
+            ];
+        }
+        return [
+            'success' => false,
+            'msg' => 'Nem található ilyen erőforrás a rendszerben!',
+        ];
+    }
+
     public function actionViewAjax($id){
         $model = $this->findModel($id);
         

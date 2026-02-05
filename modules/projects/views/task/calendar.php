@@ -7,7 +7,6 @@ FullcalendarAsset::register($this);
 
 $this->title = 'Naptár';
 
-// JS kód regisztrálása
 $this->registerJs("
     var calendarEl = document.getElementById('calendar');
     
@@ -74,7 +73,7 @@ $this->registerJs("
 </div>
 
 <div class="modal fade" id="taskModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl task-modal" role="document">
         <div class="modal-content">
             <div id="modalContent">
                 
