@@ -36,16 +36,6 @@ class TaskController extends Controller
         );
     }
 
-    public function beforeAction($action)
-    {
-
-        if (in_array($action->id, ['ajax-update'])) {
-            $this->enableCsrfValidation = false;
-        }
-
-        return parent::beforeAction($action);
-    }
-    
     public function actionAjaxUpdate(){
         
         if(!$this->request->isAjax){

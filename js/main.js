@@ -18,6 +18,7 @@ $(function(){
                 status: status,
                 asigned: asigned,
                 id: id,
+                _csrf: $('input[name="_csrf"]').val()
             },
             success: function(response) {
                 if (response.success) {
