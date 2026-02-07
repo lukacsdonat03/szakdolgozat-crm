@@ -178,13 +178,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     /**
      * @param int $id - Felhasználó azonosítója
+     * @param boolean $except - Ha TRUE az értéke, akkor a bejelentkezett felhasználót kihagyja a listából
      * @return array
      */
-    public static function getNamesForSelect($id = false){
+    public static function getNamesForSelect($id = false,$except = false){
         $result = [];
-        $users = self::find()
-            ->where(['status' => Usermodule::STATUS_ACTIVE])
-            ->all();
+        $query = self::find()->where(['status' => Usermodule::STATUS_ACTIVE]);
+
+        if($except){
+            $query->andWhere(['<>','id',Yii::$app->user->id]);
+        }
+
+        $users = $query->all();
 
         if(!empty($users)){
             foreach($users as $user){

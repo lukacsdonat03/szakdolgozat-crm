@@ -27,6 +27,10 @@ $config = [
         ],
     ],
     'components' => [
+        'formatter' => [
+            'defaultTimeZone' => 'Europe/Budapest',
+            'timeZone' => 'Europe/Budapest',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_orxrWlikqv2jcOlEx0piC8a_g86hPuC',

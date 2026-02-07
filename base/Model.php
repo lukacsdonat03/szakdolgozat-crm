@@ -8,6 +8,28 @@ use yii\helpers\ArrayHelper;
 
 class Model extends ActiveRecord {
 
+    const NO = 0;
+    const YES = 1;
+
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+    public static function getYesNo($item = false){
+        $options = [
+            self::NO => 'Nem',
+            self::YES => 'Igen',
+        ];
+        return ($item === false) ? $options : $options[$item];
+    }
+
+    public static function getStatuses($item = false){
+        $options = [
+            self::STATUS_INACTIVE => 'Inaktív',
+            self::STATUS_ACTIVE => 'Aktív',
+        ];
+        return ($item === false) ? $options : $options[$item];
+    }
+
     /**
      * Előkészít egy tömböt lenyíló listához az aktuális model rekordjaiból
      * @param boolean $addEmpty - Ha true a lista elejére beszűr egy "Nincs" stringet 0-s kulccsal

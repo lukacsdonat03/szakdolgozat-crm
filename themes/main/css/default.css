@@ -66,3 +66,13 @@ img{
 .select2-container--krajee-bs5 .select2-results__option--highlighted[aria-selected]{
     background-color: var(--color-primary);
 }
+
+.btn-primary{
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-primary:is(:hover,:focus){
+    background-color: var(--color-secondary) !important;
+    border-color: var(--color-secondary) !important;
+}

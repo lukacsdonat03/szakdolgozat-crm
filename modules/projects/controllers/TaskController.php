@@ -8,6 +8,8 @@ use app\base\Controller;
 use app\components\AppAlert;
 use app\components\GlobalHelper;
 use app\modules\projects\models\Schedule;
+use app\modules\projects\models\TaskMessage;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -34,6 +36,46 @@ class TaskController extends Controller
                 ],
             ]
         );
+    }
+
+    public function actionSendMessageAjax(){
+        
+        if(!$this->request->isAjax){
+            throw new BadRequestHttpException('Nem AJAX kérés!');
+        }
+    
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $request = Yii::$app->request;
+
+        $taskId = $request->post('task_id');
+        $content = $request->post('content');
+        $receiverId = $request->post('receiver_id');
+
+        if (empty($content)) {
+            return ['success' => false, 'msg' => 'Az üzenet nem lehet üres!'];
+        }
+
+        $msg = new TaskMessage();
+        $msg->task_id = $taskId;
+        $msg->content = $content;
+        $msg->receiver_id = $receiverId;
+        $msg->sender_id = Yii::$app->user->id;
+        $msg->created_at = date('Y-m-d H:i:s');
+
+        if ($msg->save()) {
+            $messages = TaskMessage::find()
+                ->where(['task_id' => $taskId, 'is_deleted' => TaskMessage::NO])
+                ->orderBy(['created_at' => SORT_ASC])
+                ->all();
+
+            return [
+                'success' => true,
+                'msg' => 'Üzenet elküldve!',
+                'html' => $this->renderPartial('_messages', ['messages' => $messages])
+            ];
+        }
+
+        return ['success' => false, 'msg' => 'Hiba történt a mentés során.'];
     }
 
     public function actionAjaxUpdate(){
@@ -75,10 +117,14 @@ class TaskController extends Controller
 
     public function actionViewAjax($id){
         $model = $this->findModel($id);
-        
+        $messages = $model->messages;
+
         $this->response = Response::FORMAT_JSON;
 
-        return $this->renderPartial('@app/modules/projects/views/task/_view_modal',['model' => $model]);
+        return $this->renderPartial('@app/modules/projects/views/task/_view_modal',[
+            'model' => $model,
+            'messages' => $messages
+        ]);
     }
 
     public function actionCalendarData($start = null, $end = null){

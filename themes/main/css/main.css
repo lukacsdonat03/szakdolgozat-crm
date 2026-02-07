@@ -240,6 +240,21 @@
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
 }
+.task-messages-container:not(.empty) {
+    max-height: 270px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+@media(max-width: 991.9px){
+    .modal-dialog{
+        max-width: unset;
+        min-width: unset;
+        width: 90%;
+    }
+}
 
 @media(max-width: 576px){
     .client-avatar-wrapper,.project-avatar-wrapper,.task-avatar-wrapper{

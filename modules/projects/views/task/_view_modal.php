@@ -4,6 +4,7 @@ use app\assets\LoadingOverlayAsset;
 use app\assets\SweetAlertAsset;
 use yii\widgets\DetailView;
 use app\modules\projects\models\Task;
+use app\modules\projects\models\TaskMessage;
 use app\modules\projects\Projectmodule;
 use app\modules\users\models\User;
 use kartik\select2\Select2;
@@ -16,6 +17,7 @@ SweetAlertAsset::register($this);
 
 /**
  * @var Task $model
+ * @var TaskMessage[] $messages
  */
 ?>
 
@@ -92,13 +94,43 @@ SweetAlertAsset::register($this);
                 'id' => 'task-ajax-form',
                 'action' => Url::to(['/projects/task/ajax-update']),
             ]) ?>
-                <?= $form->field($model, 'assigned_to')->dropDownList(User::getNamesForSelect(),['id' => 'ajax-asigned-dropdown'])->label("Feladat hozzárendelve") ?>
-                <?= $form->field($model, 'status')->dropDownList(Task::getStatuses(),['id' => 'ajax-status-dropdown']) ?>
-                <span class="d-none">
-                    <?= $form->field($model,'id')->hiddenInput(['value' => $model->id,'id' => 'task-id']) ?>
-                </span>
+            <?= $form->field($model, 'assigned_to')->dropDownList(User::getNamesForSelect(), ['id' => 'ajax-asigned-dropdown'])->label("Feladat hozzárendelve") ?>
+            <?= $form->field($model, 'status')->dropDownList(Task::getStatuses(), ['id' => 'ajax-status-dropdown']) ?>
+            <span class="d-none">
+                <?= $form->field($model, 'id')->hiddenInput(['value' => $model->id, 'id' => 'task-id']) ?>
+            </span>
             <?php
-                ActiveForm::end();
+            ActiveForm::end();
+            ?>
+        </div>
+        <div class="col-lg-8 col-12 mx-auto my-4">
+
+            <div id="messages-ajax-wrapper" class="mb-3">
+                <?php 
+                    echo Yii::$app->controller->renderPartial('@app/modules/projects/views/task/_messages', [
+                        'messages' => $messages ?? []
+                    ]); 
+                ?>
+            </div>
+
+            <?php $form = ActiveForm::begin([
+                'id' => 'message-ajax-form',
+                'action' => Url::to(['/projects/task/send-message-ajax']),
+                'enableClientValidation' => false,
+                'enableAjaxValidation' => false,
+            ]) ?>
+            <div class="mb-3 form-group">
+                <?= Html::label('Címzett', 'receiver-id-dropdown', ['class' => 'form-label']) ?>
+                <?= Html::dropDownList('receiver_id', null, User::getNamesForSelect(false, true), ['id' => 'receiver-id-dropdown', 'class' => 'form-select mb-3']) ?>
+            </div>
+            <?= Html::textarea('new_message', '', ['id' => 'modal-message-content', 'class' => 'form-control', 'placeholder' => 'Üzenet írása...', 'rows' => 2]) ?>
+
+            <div class="d-flex w-100 justify-content-end">
+                <?= Html::submitButton('Küldés',['class' => 'btn btn-primary mt-3']) ?>
+            </div>
+
+            <?php
+            ActiveForm::end();
             ?>
         </div>
     </div>

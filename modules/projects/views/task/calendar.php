@@ -51,13 +51,23 @@ $this->registerJs("
         datesSet: function(info) {
             console.log('Új időszak betöltve:', info.startStr, '-', info.endStr);
         },
-        // Kattintás esemény
-        eventClick: function(info) {
-            // Itt nyitod meg a Modal-t
-            // info.event.id tartalmazza a Task ID-t
-            $('#taskModal').modal('show')
-                .find('#modalContent')
-                .load('" . Url::to(['/projects/task/view-ajax']) . "?id=' + info.event.id);
+
+       eventClick: function(info) {
+            const modal = $('#taskModal');
+            const url = '" . Url::to(['/projects/task/view-ajax']) . "?id=' + info.event.id;
+
+            modal.find('#modalContent').load(url, function() {
+                modal.modal('show');
+            });
+
+            modal.off('shown.bs.modal').on('shown.bs.modal', function () {
+                setTimeout(function() {
+                    var container = $('.task-messages-container');
+                    if (container.length > 0) {
+                        container.animate({ scrollTop: container[0].scrollHeight }, 200);
+                    }
+                }, 100); 
+            });
         }
     });
 

@@ -177,4 +177,10 @@ class Task extends Model
     public function getSchedule(){
         return $this->hasOne(Schedule::class,['task_id' => 'id']);
     }
+
+    public function getMessages(){
+        return $this->hasMany(TaskMessage::class, ['task_id' => 'id'])
+            ->where(['is_deleted' => 0])
+            ->orderBy(['created_at' => SORT_ASC]);
+    }
 }
