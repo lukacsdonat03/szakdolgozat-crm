@@ -11,7 +11,9 @@ use kartik\select2\Select2;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\YiiAsset;
 
+YiiAsset::register($this);
 LoadingOverlayAsset::register($this);
 SweetAlertAsset::register($this);
 

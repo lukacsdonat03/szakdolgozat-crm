@@ -140,4 +140,72 @@ $(function () {
 
     return false;
   });
+
+  $(document).on("click", ".delete-msg", function (e) {
+    e.preventDefault();
+    const id = $(this).data("id");
+    const msgElement = $("#msg-" + id);
+
+    Swal.fire({
+      title: "Törlés?",
+      text: "Biztosan törölni szeretnéd ezt az üzenetet?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Igen, töröld!",
+      cancelButtonText: "Mégse",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let deleteData = { id: id };
+
+        if (
+          typeof csrfParam !== "undefined" &&
+          typeof csrfToken !== "undefined"
+        ) {
+          deleteData[csrfParam] = csrfToken;
+        } else {
+          deleteData[yii.getCsrfParam()] = yii.getCsrfToken();
+        }
+
+        $.ajax({
+          url:
+            typeof deleteMsgUrl !== "undefined"
+              ? deleteMsgUrl
+              : "/projects/task/delete-message-ajax",
+          type: "POST",
+          data: deleteData,
+          success: function (response) {
+            if (response.success) {
+              msgElement.fadeOut(400, function () {
+                $(this).remove();
+                if ($(".message").length === 0) {
+                  $("#messages-ajax-wrapper").html(
+                    '<p class="text-muted text-center py-3">Még nincsenek üzenetek.</p>',
+                  );
+                }
+              });
+
+              if (typeof mainCalendar !== "undefined") {
+                mainCalendar.refetchEvents();
+              } else if (window.mainCalendar) {
+                window.mainCalendar.refetchEvents();
+              }
+
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "success",
+                title: response.msg,
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            } else {
+              Swal.fire("Hiba!", response.msg, "error");
+            }
+          },
+        });
+      }
+    });
+  });
 });

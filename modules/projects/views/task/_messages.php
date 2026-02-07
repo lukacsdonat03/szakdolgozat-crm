@@ -2,12 +2,15 @@
 
 use app\modules\projects\models\TaskMessage;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * @var TaskMessage[] $messages
  */
 
 $isEmpty = empty($messages);
+
+$loggedInUserId = Yii::$app->user->id;
 ?>
 
 <div class="task-messages-container <?= ($isEmpty ? 'empty' : '') ?>">
@@ -15,8 +18,13 @@ $isEmpty = empty($messages);
         <p class="text-muted text-center py-3 no-messages-yet">Még nincsenek üzenetek.</p>
     <?php }else{ ?>
         <?php foreach ($messages as $msg): ?>
-            <div class="message mb-2 <?= $msg->sender_id == Yii::$app->user->id ? 'text-end' : '' ?>">
+            <div id="msg-<?= $msg->id ?>" class="message mb-2 <?= $msg->sender_id == Yii::$app->user->id ? 'text-end' : '' ?>">
                 <small class="text-muted mb-1 d-block">
+                    <?php if($loggedInUserId == $msg->sender_id){
+                        echo '<a href="#" class="text-danger delete-msg me-2" data-id="'.$msg->id.'" title="Törlés">
+                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                        </a>';
+                    } ?>
                     <?= Html::encode($msg->sendername) ?> -
                     <?php
                         $timestamp = strtotime($msg->created_at);
@@ -35,3 +43,9 @@ $isEmpty = empty($messages);
         <?php endforeach; ?>
     <?php } ?>
 </div>
+
+<script>
+    var deleteMsgUrl = '<?= Url::to(["/projects/task/delete-message-ajax"]) ?>';
+    var csrfToken = '<?= Yii::$app->request->getCsrfToken() ?>';
+    var csrfParam = '<?= Yii::$app->request->csrfParam ?>';
+</script>

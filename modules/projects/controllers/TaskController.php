@@ -9,6 +9,7 @@ use app\components\AppAlert;
 use app\components\GlobalHelper;
 use app\modules\projects\models\Schedule;
 use app\modules\projects\models\TaskMessage;
+use Symfony\Component\Finder\Glob;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,6 +37,36 @@ class TaskController extends Controller
                 ],
             ]
         );
+    }
+
+    public function actionDeleteMessageAjax() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Első sor legyen!
+
+        if(!$this->request->isAjax){
+            return ['success' => false, 'msg' => 'Nem AJAX kérés!'];
+        }
+
+        $id = Yii::$app->request->post('id'); // Sima post() hívás
+
+        if(empty($id)){
+            return ['success' => false, 'msg' => 'Hiányzó paraméter!'];
+        }
+
+        $model = TaskMessage::findOne($id);
+
+        if (!$model) {
+            return ['success' => false, 'msg' => 'Az üzenet nem található.'];
+        }
+
+        if ($model->sender_id !== Yii::$app->user->id) {
+            return ['success' => false, 'msg' => 'Nincs jogosultságod a törléshez!'];
+        }
+
+        if ($model->softDelete()) {
+            return ['success' => true, 'msg' => 'Üzenet törölve.'];
+        }
+
+        return ['success' => false, 'msg' => 'Hiba történt a törlés során.'];
     }
 
     public function actionSendMessageAjax(){
