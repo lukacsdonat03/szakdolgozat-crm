@@ -25,6 +25,9 @@ $config = [
         'clients' => [
             'class' => 'app\modules\clients\Clientmodule',
         ],
+        'messages' => [
+            'class' => 'app\modules\messages\Messagemodule',
+        ],
     ],
     'components' => [
         'formatter' => [

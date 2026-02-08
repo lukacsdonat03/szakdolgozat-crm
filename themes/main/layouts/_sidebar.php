@@ -56,8 +56,8 @@ $moduleId = GlobalHelper::getModuleId();
         </ul>
       </li>
       <li class="nav-item mb-2">
-        <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-chat-dots me-2"></i> Messages
+        <a href="<?= Url::to(['/messages/message/messages']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+          <i class="bi bi-chat-dots me-2"></i> Üzenőfal
         </a>
       </li>
       <?php if (Usermodule::hasAdminRole()): ?>
