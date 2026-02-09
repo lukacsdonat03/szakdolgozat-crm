@@ -209,3 +209,52 @@ $(function () {
     });
   });
 });
+
+$(document).on('submit', '#wall-post-form', function(e) {
+    e.preventDefault();
+    const $form = $(this);
+    
+    $.ajax({
+        url: $form.attr('action'),
+        type: 'POST',
+        data: $form.serialize(),
+        success: function(response) {
+            if (response.success) {
+                $('#wall-content').val('');
+                $('#reply-to-id').val('');
+                $('#reply-to-box').addClass('d-none');
+                $.pjax.reload({container: '#wall-pjax-container', async: false});
+            } else {
+                Swal.fire('Hiba!', response.msg, 'error');
+            }
+        }
+    });
+});
+
+$(document).on('click', '.btn-reply', function(e) {
+    e.preventDefault();
+    const id = $(this).data('id');
+    const user = $(this).data('user');
+    
+    $('#reply-to-id').val(id);
+    $('#reply-to-user').text(user);
+    $('#reply-to-box').removeClass('d-none');
+    $('#wall-content').focus();
+});
+
+$(document).on('click', '#reply-to-box .btn-close', function() {
+    $('#reply-to-id').val('');
+    $('#reply-to-box').addClass('d-none');
+});
+
+$(document).on('pjax:end', function() {
+    var container = $('#wall-pjax-container');
+    container.scrollTop(0);
+});
+
+$(document).ready(function() {
+    var container = $('#wall-pjax-container');
+    if (container.length > 0) {
+        container.scrollTop(0);
+    }
+});

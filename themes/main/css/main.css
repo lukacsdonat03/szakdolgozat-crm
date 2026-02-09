@@ -247,12 +247,125 @@
     padding: 10px;
     border-radius: 5px;
 }
+.wall-container {
+    height: 70vh;
+    display: flex;
+    gap: 20px;
+}
+
+#wall-pjax-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 15px;
+    height: 100%;
+
+}
+
+#wall-pjax-container::-webkit-scrollbar {
+    width: 6px;
+}
+#wall-pjax-container::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+.wall-sidebar {
+    width: 450px;
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+}
+
+.message-bubble {
+    max-width: 75%;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.message-content {
+    font-size: 0.7rem;
+}
+
+.reply-close {
+    font-size: 0.6rem;
+}
+
+.message-bubble.bg-primary {
+    background: #4DD653 !important;
+    background: linear-gradient(145deg,
+            rgba(80, 230, 120, 0.9) 0%,
+            rgba(40, 180, 170, 0.85) 50%,
+            rgba(10, 130, 120, 0.8) 100%) !important;
+    box-shadow:
+        0 4px 25px rgba(0, 180, 140, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(1px);
+}
+
+.pagination {
+    gap: 5px;
+    border: none;
+}
+
+.pagination li a, .pagination li span {
+    border: none !important;
+    border-radius: 8px !important;
+    margin: 0 2px;
+    color: var(--color-black) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    padding: 8px 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    text-decoration: none;
+}
+
+.pagination li.active span,.page-link.active, .active > .page-link {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(77, 214, 83, 0.3) !important;
+}
+
+.pagination li a:hover,.pagination li a:hover span {
+    background-color: var(--color-secondary) !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.pagination li.prev a, .pagination li.next a {
+    background-color: white;
+    color: var(--color-alt);
+    border: 1px solid #eee !important;
+}
 
 @media(max-width: 991.9px){
     .modal-dialog{
         max-width: unset;
         min-width: unset;
         width: 90%;
+    }
+    .wall-sidebar{
+        width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wall-container {
+        display: block;
+        height: auto;
+    }
+    .wall-sidebar {
+        width: 100%;
+        position: relative;
+        margin-bottom: 20px;
+        top: 0;
+    }
+    #wall-pjax-container {
+        height: 500px;
+    }
+    .message-bubble{
+        width: 100%;
+        max-width: unset;
     }
 }
 

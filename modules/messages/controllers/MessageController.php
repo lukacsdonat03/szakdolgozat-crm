@@ -5,6 +5,7 @@ namespace app\modules\messages\controllers;
 use app\modules\messages\models\Message;
 use app\modules\messages\models\search\MessageSearch;
 use app\base\Controller;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -33,12 +34,38 @@ class MessageController extends Controller
 
     
     public function actionMessages(){
-
-
+        $searchModel = new MessageSearch(['is_deleted' => Message::NO]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $newMessage = new Message();
         return $this->render('messages',[
-
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'newMessage' => $newMessage,
         ]);
     }
+
+    public function actionSendWallMessage()
+{
+    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $model = new Message();
+
+    if ($model->load(Yii::$app->request->post())) {
+        $model->sender_id = Yii::$app->user->id;
+      
+        if ($model->save()) {
+            return [
+                'success' => true,
+                'msg' => 'Üzenet elküldve!'
+            ];
+        }
+    }
+
+    return [
+        'success' => false, 
+        'msg' => 'Hiba történt a mentés során.',
+        'errors' => $model->getErrors()
+    ];
+}
 
     /**
      * Finds the Message model based on its primary key value.

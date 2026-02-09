@@ -4,6 +4,7 @@ namespace app\modules\messages\models;
 
 use app\modules\users\models\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "messages_message".
@@ -65,6 +66,33 @@ class Message extends \app\base\Model
             'created_at' => 'Küldve',
             'is_deleted' => 'Törölve',
         ];
+    }
+
+    public function behaviors(){
+        return array_merge(
+            parent::behaviors(),
+            [
+                [
+                    'class' => TimestampBehavior::class,
+                    'createdAtAttribute' => 'created_at',
+                    'updatedAtAttribute' => false,
+                    'value' => function () {
+                        return date('Y-m-d H:i:s');
+                    }
+                ]
+            ]
+        );
+    }
+
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert)){
+            if($this->isNewRecord){
+                $this->sender_id = Yii::$app->user->id;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
