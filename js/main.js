@@ -1,3 +1,5 @@
+let wallPollingInterval;
+
 $(function () {
   $(document).on(
     "change",
@@ -210,51 +212,96 @@ $(function () {
   });
 });
 
-$(document).on('submit', '#wall-post-form', function(e) {
-    e.preventDefault();
-    const $form = $(this);
-    
-    $.ajax({
-        url: $form.attr('action'),
-        type: 'POST',
-        data: $form.serialize(),
-        success: function(response) {
-            if (response.success) {
-                $('#wall-content').val('');
-                $('#reply-to-id').val('');
-                $('#reply-to-box').addClass('d-none');
-                $.pjax.reload({container: '#wall-pjax-container', async: false});
-            } else {
-                Swal.fire('Hiba!', response.msg, 'error');
-            }
+$(document).on("submit", "#wall-post-form", function (e) {
+  e.preventDefault();
+  const $form = $(this);
+
+  $.ajax({
+    url: $form.attr("action"),
+    type: "POST",
+    data: $form.serialize(),
+    success: function (response) {
+      if (response.success) {
+        $("#wall-content").val("");
+        $("#reply-to-id").val("");
+        $("#reply-to-box").addClass("d-none");
+        $.pjax.reload({ container: "#wall-pjax-container", async: false, scrollTo:0 });
+      } else {
+        Swal.fire("Hiba!", response.msg, "error");
+      }
+    },
+  });
+});
+
+$(document).on("click", ".btn-reply", function (e) {
+  e.preventDefault();
+  const id = $(this).data("id");
+  const user = $(this).data("user");
+
+  $("#reply-to-id").val(id);
+  $("#reply-to-user").text(user);
+  $("#reply-to-box").removeClass("d-none");
+  $("#wall-content").focus();
+});
+
+$(document).on("click", "#reply-to-box .btn-close", function () {
+  $("#reply-to-id").val("");
+  $("#reply-to-box").addClass("d-none");
+});
+
+$(document).ready(function () {
+  var container = $("#wall-pjax-container");
+  if (container.length > 0) {
+    container.scrollTop(0);
+  }
+});
+
+function getUrlParameter(sParam) {
+  let sPageURL = window.location.search.substring(1);
+  let sURLVariables = sPageURL.split("&");
+  let sParameterName;
+  let i;
+
+  for (i = 0; i < sURLVariables.length; i++) {
+    sParameterName = sURLVariables[i].split("=");
+    if (sParameterName[0] === sParam) {
+      return sParameterName[1] === undefined
+        ? true
+        : decodeURIComponent(sParameterName[1]);
+    }
+  }
+  return false;
+}
+
+function startWallPolling() {
+    wallPollingInterval = setInterval(function() {
+        var page = getUrlParameter('page');
+        
+        if ($('#wall-pjax-container').length && (!page || page == '1')) {
+            $.pjax.reload({
+                container: '#wall-pjax-container',
+                push: false,
+                replace: false,
+                scrollTo: false,
+                timeout: 5000,
+                async: true
+            });
         }
-    });
+    }, 5000);
+}
+
+function stopWallPolling() {
+    clearInterval(wallPollingInterval);
+}
+
+$(document).ready(function() {
+    startWallPolling();
 });
 
-$(document).on('click', '.btn-reply', function(e) {
-    e.preventDefault();
-    const id = $(this).data('id');
-    const user = $(this).data('user');
-    
-    $('#reply-to-id').val(id);
-    $('#reply-to-user').text(user);
-    $('#reply-to-box').removeClass('d-none');
-    $('#wall-content').focus();
-});
-
-$(document).on('click', '#reply-to-box .btn-close', function() {
-    $('#reply-to-id').val('');
-    $('#reply-to-box').addClass('d-none');
+$(document).on('pjax:start', function() {
+    stopWallPolling();
 });
 
 $(document).on('pjax:end', function() {
-    var container = $('#wall-pjax-container');
-    container.scrollTop(0);
-});
-
-$(document).ready(function() {
-    var container = $('#wall-pjax-container');
-    if (container.length > 0) {
-        container.scrollTop(0);
-    }
+    startWallPolling();
 });

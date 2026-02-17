@@ -45,7 +45,7 @@ $this->title = 'Üzenőfal';
             </div>
         </div>
 
-        <?php Pjax::begin(['id' => 'wall-pjax-container', 'timeout' => 5000,]); ?>
+        <?php Pjax::begin(['id' => 'wall-pjax-container', 'timeout' => 5000,'scrollTo' => false]); ?>
             <?= ListView::widget([
                 'dataProvider' => $dataProvider,
                 'itemView' => '_message_item',

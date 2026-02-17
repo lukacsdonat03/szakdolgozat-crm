@@ -314,9 +314,8 @@
     color: var(--color-black) !important;
     font-weight: 500;
     transition: all 0.3s ease;
-    background-color: #f8f9fa;
+    background-color: #fff;
     padding: 8px 14px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     text-decoration: none;
 }
 
