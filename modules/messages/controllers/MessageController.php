@@ -32,7 +32,39 @@ class MessageController extends Controller
         );
     }
 
-    
+    public function beforeAction($action){
+        if ($action->id === 'delete-wall-message') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
+
+    public function actionDeleteWallMessage()    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $id = Yii::$app->request->post('id');
+
+        $model = Message::findOne($id);
+
+        if (!$model) {
+            return ['success' => false, 'msg' => 'Az üzenet nem található.'];
+        }
+
+        if ($model->sender_id !== Yii::$app->user->id) {
+            return ['success' => false, 'msg' => 'Nincs jogosultságod törölni ezt az üzenetet!'];
+        }
+
+        $model->is_deleted = Message::YES;
+        
+        if ($model->save(false)) {
+            return [
+                'success' => true,
+                'msg' => 'Üzenet törölve.'
+            ];
+        }
+
+        return ['success' => false, 'msg' => 'Nem sikerült elmenteni a változtatásokat.'];
+    }
+
     public function actionMessages(){
         $searchModel = new MessageSearch(['is_deleted' => Message::NO]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

@@ -306,3 +306,54 @@ $(document).on('pjax:end', function() {
     startWallPolling();
 });
 
+$(document).on("click", ".btn-delete-wall-msg", function (e) {
+    e.preventDefault();
+    const id = $(this).data("id");
+    const $messageRow = $(this).closest(".wall-message");
+
+    Swal.fire({
+        title: "Törlés?",
+        text: "Biztosan törölni szeretnéd ezt az üzenetet?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Igen, töröld!",
+        cancelButtonText: "Mégse",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/messages/message/delete-wall-message", // Controller elérési út
+                type: "POST",
+                data: {
+                    id: id,
+                    _csrf: yii.getCsrfToken()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $messageRow.fadeOut(400, function() {
+                            $(this).remove();
+                        });
+                        
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: response.msg,
+                        });
+                    } else {
+                        Swal.fire("Hiba!", response.msg, "error");
+                    }
+                },
+                error: function() {
+                    Swal.fire("Hiba!", "Szerver hiba történt.", "error");
+                }
+            });
+        }
+    });
+});

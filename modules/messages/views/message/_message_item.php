@@ -24,10 +24,18 @@ $isMine = ($model->sender_id == Yii::$app->user->id);
             <?= nl2br(Html::encode($model->content)) ?>
         </div>
 
-        <div class="actions mt-2 text-end">
+        <div class="actions mt-2 d-flex justify-content-between align-items-center">
+            <?php if ($isMine): ?>
+                <a href="#" class="btn-delete-wall-msg text-decoration-none text-white small opacity-75 me-3" 
+                   data-id="<?= $model->id ?>">
+                    <i class="bi bi-trash"></i> Törlés
+                </a>
+            <?php else: ?>
+                <span></span> <?php endif; ?>
+
             <a href="#" class="btn-reply text-decoration-none <?= $isMine ? 'text-white-50' : 'text-muted' ?> small" 
                data-id="<?= $model->id ?>" data-user="<?= Html::encode($model->sender->username) ?>">
-                <i class="fas fa-reply"></i> Válasz
+                <i class="bi bi-reply"></i> Válasz
             </a>
         </div>
     </div>
