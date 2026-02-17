@@ -78,4 +78,28 @@ class GlobalHelper extends Component
     public static function getModuleId(){
         return Yii::$app->controller->module->id;
     }
+
+    public static function getActionId(){
+        return Yii::$app->controller->action->id;
+    }
+
+    public static function getControllerId(){
+        return Yii::$app->controller->id;
+    }
+
+    public static function isSelected($route){
+        $normalizedRoute = is_array($route) ? ltrim($route[0], '/') : ltrim($route, '/');
+        
+        $currentRoute = Yii::$app->controller->route;
+
+        if ($currentRoute === $normalizedRoute) {
+            return true;
+        }
+
+        if (!empty($normalizedRoute) && strpos($currentRoute, $normalizedRoute) === 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

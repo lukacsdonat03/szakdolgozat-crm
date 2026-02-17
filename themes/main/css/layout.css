@@ -48,7 +48,7 @@ header {
   color: var(--color-primary);
 }
 
-#sidebar .nav-link:is(:hover, :focus), [data-bs-toggle="collapse"][aria-expanded="true"]{
+#sidebar .nav-link:is(:hover, :focus), [data-bs-toggle="collapse"][aria-expanded="true"],.nav-link.selected{
   color: var(--color-secondary) !important;
   background: rgba(77, 241, 83, 0.2);
 }
