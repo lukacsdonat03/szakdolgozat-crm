@@ -25,6 +25,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string|null $created_at Létrehozva
  * @property string|null $updated_at Módosítva
  * @property string|null $completed_at Elkészült
+ * @property int $is_deleted
  *
  * @property User $assignedTo
  * @property Project $project
@@ -55,8 +56,8 @@ class Task extends Model
     {
         return [
             [['project_id', 'assigned_to', 'status', 'due_date', 'estimated_hours', 'created_by', 'created_at', 'updated_at', 'completed_at'], 'default', 'value' => null],
-            [['sort_order'], 'default', 'value' => 0],
-            [['project_id', 'assigned_to', 'status', 'priority', 'estimated_hours', 'sort_order', 'created_by'], 'integer'],
+            [['sort_order','is_deleted'], 'default', 'value' => 0],
+            [['project_id', 'assigned_to', 'status', 'priority', 'estimated_hours', 'sort_order', 'created_by','is_deleted'], 'integer'],
             [['title', 'description','project_id','status'], 'required'],
             [['description'], 'string'],
             [['due_date', 'created_at', 'updated_at', 'completed_at'], 'safe'],

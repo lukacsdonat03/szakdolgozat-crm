@@ -8,6 +8,7 @@ use app\base\Controller;
 use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 
 /**
  * ClientController implements the CRUD actions for Client model.
@@ -30,6 +31,13 @@ class ClientController extends Controller
                 ],
             ]
         );
+    }
+
+    public function beforeAction($action){
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -113,8 +121,12 @@ class ClientController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        //$this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->is_deleted = Client::YES;
+        if(!$model->save()){
+            throw new BadRequestHttpException('Sikertelen törlés!');
+        }
         return $this->redirect(['index']);
     }
 

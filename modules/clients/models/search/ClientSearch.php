@@ -17,7 +17,7 @@ class ClientSearch extends Client
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id','is_deleted'], 'integer'],
             [['name', 'company', 'email', 'phone', 'tax_number', 'address', 'notes'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class ClientSearch extends Client
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'is_deleted' => Client::NO,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

@@ -18,7 +18,7 @@ class TaskSearch extends Task
     public function rules()
     {
         return [
-            [['id', 'project_id', 'assigned_to', 'status', 'priority', 'estimated_hours', 'sort_order', 'created_by'], 'integer'],
+            [['id', 'project_id', 'assigned_to', 'status', 'priority', 'estimated_hours', 'sort_order', 'created_by','is_deleted'], 'integer'],
             [['title', 'description', 'due_date', 'created_at', 'updated_at', 'completed_at'], 'safe'],
         ];
     }
@@ -68,6 +68,7 @@ class TaskSearch extends Task
             'estimated_hours' => $this->estimated_hours,
             'sort_order' => $this->sort_order,
             'created_by' => $this->created_by,
+            'is_deleted' => Task::NO,
           /*   'created_at' => $this->created_at,
             'updated_at' => $this->updated_at, */
         ]);

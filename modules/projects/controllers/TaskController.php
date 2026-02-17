@@ -39,14 +39,21 @@ class TaskController extends Controller
         );
     }
 
+    public function beforeAction($action){
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
+    }
+
     public function actionDeleteMessageAjax() {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Első sor legyen!
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if(!$this->request->isAjax){
             return ['success' => false, 'msg' => 'Nem AJAX kérés!'];
         }
 
-        $id = Yii::$app->request->post('id'); // Sima post() hívás
+        $id = Yii::$app->request->post('id');
 
         if(empty($id)){
             return ['success' => false, 'msg' => 'Hiányzó paraméter!'];
@@ -279,8 +286,12 @@ class TaskController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        //$this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->is_deleted = Task::YES;
+        if(!$model->save()){
+            throw new BadRequestHttpException('Sikertelen törlés!');
+        }
         return $this->redirect(['index']);
     }
 

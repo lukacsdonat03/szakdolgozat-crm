@@ -17,7 +17,7 @@ class ProjectSearch extends Project
     public function rules()
     {
         return [
-            [['id', 'client_id', 'status_id', 'priority', 'created_by'], 'integer'],
+            [['id', 'client_id', 'status_id', 'priority', 'created_by','is_deleted'], 'integer'],
             [['name', 'description', 'start_date', 'deadline', 'created_at', 'updated_at'], 'safe'],
             [['budget'], 'number'],
         ];
@@ -68,6 +68,7 @@ class ProjectSearch extends Project
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'is_deleted' => Project::NO,
         ]);
 
         if ($this->start_date) {

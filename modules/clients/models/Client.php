@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
  * @property string|null $tax_number Adószám
  * @property string|null $address Cím
  * @property string|null $notes Megjegyzés
+ * @property int $is_deleted
  *
  * @property Project[] $projectProjects
  */
@@ -39,10 +40,12 @@ class Client extends \app\base\Model
     {
         return [
             [['tax_number', 'address', 'notes'], 'default', 'value' => null],
+            [['is_deleted'], 'default', 'value' => 0],
             [['name', 'company', 'email', 'phone'], 'required'],
             [['name', 'email', 'address'], 'string', 'max' => 126],
             [['company'], 'string', 'max' => 255],
             [['email'],'email'],
+            [['is_deleted'],'integer'],
             [['phone', 'tax_number'], 'string', 'max' => 32],
             [['notes'], 'string', 'max' => 512],
         ];

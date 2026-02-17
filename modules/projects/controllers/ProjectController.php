@@ -9,6 +9,8 @@ use app\base\Controller;
 use app\components\AppAlert;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * ProjectController implements the CRUD actions for Project model.
@@ -31,6 +33,13 @@ class ProjectController extends Controller
                 ]
             ]
         );
+    }
+
+    public function beforeAction($action){
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -117,8 +126,12 @@ class ProjectController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        
+        //$this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->is_deleted = Project::YES;
+        if(!$model->save()){
+            throw new BadRequestHttpException('Sikertelen törlés!');
+        }
         return $this->redirect(['index']);
     }
 

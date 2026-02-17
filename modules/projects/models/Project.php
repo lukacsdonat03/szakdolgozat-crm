@@ -24,6 +24,7 @@ use yii\helpers\ArrayHelper;
  * @property int|null $created_by Létrehozta
  * @property string|null $created_at Létrehozva
  * @property string|null $updated_at Módosítva
+ * @property int $is_deleted
  *
  * @property Client $client
  * @property User $createdBy
@@ -50,9 +51,9 @@ class Project extends Model
     {
         return [
             [['description', 'status_id', 'budget', 'created_by', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['priority'], 'default', 'value' => 0],
+            [['priority','is_deleted'], 'default', 'value' => 0],
             [['client_id', 'name', 'start_date', 'deadline'], 'required'],
-            [['client_id', 'status_id', 'priority', 'created_by'], 'integer'],
+            [['client_id', 'status_id', 'priority', 'created_by','is_deleted'], 'integer'],
             [['description'], 'string'],
             [['start_date', 'deadline', 'created_at', 'updated_at', 'taglist'], 'safe'],
             [['budget'], 'number'],
