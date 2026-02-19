@@ -40,7 +40,7 @@ class TaskSearch extends Task
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null)
+    public function search($params, $filters = false, $formName = null)
     {
         $query = Task::find();
 
@@ -49,6 +49,12 @@ class TaskSearch extends Task
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        if($filters != false) {
+            $filter['TaskSearch'] = $filters;
+            $this->load($filter);
+        }
+
 
         $this->load($params, $formName);
 

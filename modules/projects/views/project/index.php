@@ -65,6 +65,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
+                'template' => '{view} {update} {delete} {tasks}',
+                'buttons' => [
+                    'tasks' => function($url, $model, $key){
+                        return Html::a('<i class="bi bi-card-checklist"></i>', $url, [
+                        'title' => 'Feladatok',
+                        'data-pjax' => '0',
+                        'class' => 'anim'
+                    ]);
+                    }
+                ],
                 'urlCreator' => function ($action, Project $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

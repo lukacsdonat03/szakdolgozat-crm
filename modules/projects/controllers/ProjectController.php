@@ -7,6 +7,7 @@ use app\modules\projects\models\search\ProjectSearch;
 use yii\filters\AccessControl;
 use app\base\Controller;
 use app\components\AppAlert;
+use app\modules\projects\models\search\TaskSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -40,6 +41,19 @@ class ProjectController extends Controller
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
+    }
+
+    public function actionTasks($id){
+        $model = $this->findModel($id);
+        $filter = ['project_id' => $model->id];
+        $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams,$filter);
+
+        return $this->render('tasks',[
+            'project' => $model,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
     }
 
     /**
