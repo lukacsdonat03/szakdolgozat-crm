@@ -54,12 +54,6 @@ class ProjectController extends Controller
         return $behaviors;
     }
 
-    public function beforeAction($action){
-        if ($action->id === 'delete') {
-            $this->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
-    }
 
     public function actionTasks($id){
         $model = $this->findModel($id);

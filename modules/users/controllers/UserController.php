@@ -61,7 +61,6 @@ class UserController extends Controller
     public function beforeAction($action)
     {
         
-
         if (in_array($action->id, ['logout'])) {
             $this->enableCsrfValidation = false;
         }

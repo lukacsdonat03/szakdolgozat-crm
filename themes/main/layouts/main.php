@@ -29,6 +29,8 @@ LayoutAsset::register($this);
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
+    <?= Html::csrfMetaTags() ?>
+
     <title><?= Html::encode($this->title) ?></title>
     
     <?php $this->head() ?>

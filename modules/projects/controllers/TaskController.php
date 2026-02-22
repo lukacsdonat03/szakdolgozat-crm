@@ -57,13 +57,6 @@ class TaskController extends Controller
         return $behaviors;
     }
 
-    public function beforeAction($action){
-        if ($action->id === 'delete') {
-            $this->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
-    }
-
     public function actionDeleteMessageAjax() {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
