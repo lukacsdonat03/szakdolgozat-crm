@@ -3,6 +3,7 @@
 use app\components\GlobalHelper;
 use app\modules\projects\models\Project;
 use app\modules\projects\Projectmodule;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -13,6 +14,8 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Projektek', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$notAssociate = !Usermodule::isAssociate(); 
 ?>
 <div class="project-view">
     <div class="card shadow-sm mb-4">
@@ -27,33 +30,43 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php if (!empty($model->client)): ?>
                             <p class="text-muted mb-0">
                                 <i class="bi bi-building me-1"></i>
+                                <?php if($notAssociate) { ?>
                                 <?= Html::a(
                                     Html::encode($model->client->name),
                                     ['/clients/client/view', 'id' => $model->client_id],
                                     ['class' => 'anim']
                                 ) ?>
+                                <?php }else{ ?>
+                                    <?= Html::tag(
+                                        'span',
+                                        Html::encode($model->client->name),
+                                        ['class' => 'anim']
+                                    ) ?>
+                                <?php } ?>
                             </p>
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="d-flex gap-2 flex-column flex-sm-row">
-                    <?= Html::a(
-                        '<i class="bi bi-pencil me-1"></i> Szerkesztés',
-                        ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-outline-primary anim']
-                    ) ?>
-                    <?= Html::a(
-                        '<i class="bi bi-trash me-1"></i> Törlés',
-                        ['delete', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-outline-danger anim',
-                            'data' => [
-                                'confirm' => 'Biztosan törölni szeretnéd ezt a projektet?',
-                                'method' => 'post',
-                            ],
-                        ]
-                    ) ?>
-                </div>
+                <?php if($notAssociate) { ?>
+                    <div class="d-flex gap-2 flex-column flex-sm-row">
+                        <?= Html::a(
+                            '<i class="bi bi-pencil me-1"></i> Szerkesztés',
+                            ['update', 'id' => $model->id],
+                            ['class' => 'btn btn-outline-primary anim']
+                        ) ?>
+                        <?= Html::a(
+                            '<i class="bi bi-trash me-1"></i> Törlés',
+                            ['delete', 'id' => $model->id],
+                            [
+                                'class' => 'btn btn-outline-danger anim',
+                                'data' => [
+                                    'confirm' => 'Biztosan törölni szeretnéd ezt a projektet?',
+                                    'method' => 'post',
+                                ],
+                            ]
+                        ) ?>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -93,17 +106,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endif; ?>
                         </div>
                     </div>
-
-                    <div class="info-item">
-                        <label><i class="bi bi-cash-stack"></i> Költségvetés</label>
-                        <div class="value">
-                            <?php if (!empty($model->budget)): ?>
-                                <strong><?= GlobalHelper::priceFormat($model->budget) ?></strong>
-                            <?php else: ?>
-                                <span class="text-muted">Nincs megadva</span>
-                            <?php endif; ?>
+                    
+                    <?php if($notAssociate) { ?>
+                        <div class="info-item">
+                            <label><i class="bi bi-cash-stack"></i> Költségvetés</label>
+                            <div class="value">
+                                <?php if (!empty($model->budget)): ?>
+                                    <strong><?= GlobalHelper::priceFormat($model->budget) ?></strong>
+                                <?php else: ?>
+                                    <span class="text-muted">Nincs megadva</span>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
+                    <?php } ?>
 
                     <div class="info-item mb-0">
                         <label><i class="bi bi-person-badge"></i> Létrehozta</label>

@@ -4,6 +4,7 @@ use app\components\GlobalHelper;
 use yii\helpers\Html;
 use app\modules\projects\models\Task;
 use app\modules\projects\Projectmodule;
+use app\modules\users\Usermodule;
 
 /** @var yii\web\View $this */
 /** @var app\modules\projects\models\Task $model */
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Feladatok', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
+$notAssociate = !Usermodule::isAssociate();
 ?>
 <div class="task-view">
     <div class="card shadow-sm mb-4">
@@ -31,33 +33,43 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <p class="text-muted mb-0">
                                 <i class="bi bi-briefcase me-1"></i>
+                                <?php if($notAssociate){ ?>
                                 <?= Html::a(
                                     Html::encode($project->name . $postFix),
                                     ['/projects/project/view', 'id' => $project->id],
                                     ['class' => 'anim']
                                 ) ?>
+                                <?php }else{ ?>
+                                    <?= Html::tag(
+                                        'span',
+                                        Html::encode($project->name . $postFix),
+                                        ['class' => 'anim']
+                                    ) ?>
+                                <?php } ?>
                             </p>
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="d-flex gap-2 flex-column flex-sm-row">
-                    <?= Html::a(
-                        '<i class="bi bi-pencil me-1"></i> Szerkesztés',
-                        ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-outline-primary anim']
-                    ) ?>
-                    <?= Html::a(
-                        '<i class="bi bi-trash me-1"></i> Törlés',
-                        ['delete', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-outline-danger anim',
-                            'data' => [
-                                'confirm' => 'Biztosan törölni szeretnéd ezt a feladatot?',
-                                'method' => 'post',
-                            ],
-                        ]
-                    ) ?>
-                </div>
+                <?php if($notAssociate){ ?>
+                    <div class="d-flex gap-2 flex-column flex-sm-row">
+                        <?= Html::a(
+                            '<i class="bi bi-pencil me-1"></i> Szerkesztés',
+                            ['update', 'id' => $model->id],
+                            ['class' => 'btn btn-outline-primary anim']
+                        ) ?>
+                        <?= Html::a(
+                            '<i class="bi bi-trash me-1"></i> Törlés',
+                            ['delete', 'id' => $model->id],
+                            [
+                                'class' => 'btn btn-outline-danger anim',
+                                'data' => [
+                                    'confirm' => 'Biztosan törölni szeretnéd ezt a feladatot?',
+                                    'method' => 'post',
+                                ],
+                            ]
+                        ) ?>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>

@@ -9,8 +9,10 @@ use app\components\AppAlert;
 use app\components\GlobalHelper;
 use app\modules\projects\models\Schedule;
 use app\modules\projects\models\TaskMessage;
+use app\modules\users\Usermodule;
 use Symfony\Component\Finder\Glob;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -24,19 +26,35 @@ class TaskController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
+    public function behaviors(){
+        $behaviors = parent::behaviors();
+        if (isset($behaviors['access']['rules'])) {
+            
+            array_unshift($behaviors['access']['rules'], [
+                'actions' => ['update'],
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return Usermodule::isAssociate();
+                },
+            ]);
+        
+            array_unshift($behaviors['access']['rules'], [
+                'actions' => ['delete'],
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return !Usermodule::isDeleteEnabledForRight();
+                },
+            ]);
+        }
+
+        $behaviors['verbs'] = [
+            'class' => \yii\filters\VerbFilter::className(),
+            'actions' => [
+                'delete' => ['POST'],
+            ],
+        ];
+
+        return $behaviors;
     }
 
     public function beforeAction($action){
@@ -193,8 +211,12 @@ class TaskController extends Controller
      */
     public function actionIndex()
     {
+        $filter = [];
+        if(Usermodule::isAssociate()){
+            $filter['assigned_to'] = Yii::$app->user->id;
+        }
         $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams,$filter);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

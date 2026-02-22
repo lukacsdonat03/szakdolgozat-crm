@@ -66,6 +66,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => ActionColumn::className(),
                 'template' => '{view} {update} {delete} {tasks}',
+                'visibleButtons' => [
+                    'delete' => function ($model, $key, $index) {
+                        return Usermodule::isDeleteEnabledForRight();
+                    },
+                    'update' => function ($model,$key,$index){
+                        return !Usermodule::isAssociate();
+                    },
+                ],
                 'buttons' => [
                     'tasks' => function($url, $model, $key){
                         return Html::a('<i class="bi bi-card-checklist"></i>', $url, [

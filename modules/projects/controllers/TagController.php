@@ -6,6 +6,7 @@ use app\modules\projects\models\Tag;
 use app\modules\projects\models\search\TagSearch;
 use app\base\Controller;
 use app\components\AppAlert;
+use app\modules\users\Usermodule;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -19,17 +20,28 @@ class TagController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
+        $behaviors = parent::behaviors();
+        if (isset($behaviors['access']['rules'])) {
+
+            array_unshift($behaviors['access']['rules'], [
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return Usermodule::isAssociate();
+                },
+                'denyCallback' => function ($rule, $action) {
+                    throw new \yii\web\ForbiddenHttpException('Ezzel a jogosultássgal nem érhető el ez a modul.');
+                }
+            ]);
+        }
+
+        $behaviors['verbs'] = [
+            'class' => \yii\filters\VerbFilter::className(),
+            'actions' => [
+                'delete' => ['POST'],
+            ],
+        ];
+
+        return $behaviors;
     }
 
     /**

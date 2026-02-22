@@ -7,24 +7,24 @@ use yii\filters\AccessControl;
 
 class Controller extends \yii\web\Controller
 {
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'except' => [
-                    'users/login/login',
-                    'users/registration/registration',
-                ],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'], 
+        public function behaviors()
+        {
+            return [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'except' => [
+                        'users/login/login',
+                        'users/registration/registration',
+                    ],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], 
+                        ],
                     ],
                 ],
-            ],
-        ];
-    }
+            ];
+        }
 
     public function beforeAction($action)
     {

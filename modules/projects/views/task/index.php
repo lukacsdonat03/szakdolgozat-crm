@@ -4,6 +4,7 @@ use app\modules\projects\models\Project;
 use app\modules\projects\models\Task;
 use app\modules\projects\Projectmodule;
 use app\modules\users\models\User;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -45,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return !empty($model->assignedto) ? User::getNamesForSelect($model->assigned_to) : 'Nincs beállítva';
                 },
                 'filter' => Html::activeDropDownList($searchModel,'assigned_to',User::getNamesForSelect(),['class'=>'form-select','prompt' => '']),
+                'visible' => !Usermodule::isAssociate(),
             ],
             [
                 'attribute' => 'status',
@@ -91,6 +93,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'completed_at',
             [
                 'class' => ActionColumn::className(),
+                'visibleButtons' => [
+                    'delete' => function ($model, $key, $index) {
+                        return Usermodule::isDeleteEnabledForRight();
+                    },
+                    'update' => function ($model,$key,$index){
+                        return !Usermodule::isAssociate();
+                    },
+                ],
                 'urlCreator' => function ($action, Task $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

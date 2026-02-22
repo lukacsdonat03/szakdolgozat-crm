@@ -7,6 +7,7 @@ use app\modules\projects\models\Project;
 use app\modules\projects\models\Task;
 use app\modules\projects\Projectmodule;
 use app\modules\users\models\User;
+use app\modules\users\Usermodule;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -42,6 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return !empty($model->assignedto) ? User::getNamesForSelect($model->assigned_to) : 'Nincs beállítva';
                 },
                 'filter' => Html::activeDropDownList($searchModel,'assigned_to',User::getNamesForSelect(),['class'=>'form-select','prompt' => '']),
+                'visible' => !Usermodule::isAssociate(),
             ],
             [
                 'attribute' => 'status',

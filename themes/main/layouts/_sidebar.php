@@ -4,6 +4,7 @@ use app\components\GlobalHelper;
 use app\modules\users\Usermodule;
 use yii\helpers\Url;
 
+$notAssociate = !Usermodule::isAssociate();
 ?>
 
 <nav id="sidebar" class="d-flex flex-column bg-white active border-end vh-100 position-fixed">
@@ -15,16 +16,20 @@ use yii\helpers\Url;
           <i class="bi bi-calendar-range-fill me-2"></i> Naptár
         </a>
       </li>
-      <li class="nav-item mb-2">
-        <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-          <i class="bi bi-house me-2"></i> Dashboard
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a href="<?= Url::to(['/clients/client/index']) ?>" class="nav-link anim text-dark d-flex align-items-center <?= GlobalHelper::isSelected('clients') ? 'selected' : '' ?>">
-          <i class="bi bi-people me-2"></i> Ügyfelek
-        </a>
-      </li>
+      <?php if($notAssociate){ ?>
+        <li class="nav-item mb-2">
+          <a href="#" class="nav-link anim text-dark d-flex align-items-center">
+            <i class="bi bi-house me-2"></i> Dashboard
+          </a>
+        </li>
+      <?php } ?>
+      <?php if($notAssociate){ ?>
+        <li class="nav-item mb-2">
+          <a href="<?= Url::to(['/clients/client/index']) ?>" class="nav-link anim text-dark d-flex align-items-center <?= GlobalHelper::isSelected('clients') ? 'selected' : '' ?>">
+            <i class="bi bi-people me-2"></i> Ügyfelek
+          </a>
+        </li>
+      <?php } ?>
       <li class="nav-item mb-2">
         <?php
         // Akkor nyitott, ha a projektek modulban vagyunk, DE NEM a naptárnál
@@ -37,7 +42,7 @@ use yii\helpers\Url;
         </a>
         <ul class="collapse list-unstyled ps-4 <?= $isProjectModuleActive ? 'show' : '' ?>" id="projectSubmenu">
           <li class="mb-2">
-            <a class="nav-link anim text-dark <?= GlobalHelper::isSelected('projects/project/index') ? 'selected' : '' ?>" href="<?= Url::to(['/projects/project/index']) ?>">
+            <a class="nav-link anim text-dark <?= (GlobalHelper::isSelected('projects/project/index') || GlobalHelper::isSelected('projects/project/tasks')) ? 'selected' : '' ?>" href="<?= Url::to(['/projects/project/index']) ?>">
               <i class="bi bi-list-ul me-2"></i> Összes projekt
             </a>
           </li>
@@ -46,16 +51,18 @@ use yii\helpers\Url;
               <i class="bi bi-journal-bookmark-fill me-2"></i> Feladatok
             </a>
           </li>
-          <li class="mb-2">
-            <a class="nav-link anim text-dark <?= GlobalHelper::isSelected('projects/status/index') ? 'selected' : '' ?>" href="<?= Url::to(['/projects/status/index']) ?>">
-              <i class="bi bi-palette2"></i> Projekt státuszok
-            </a>
-          </li>
-          <li class="mb-2">
-            <a class="nav-link anim text-dark <?= GlobalHelper::isSelected('projects/tag/index') ? 'selected' : '' ?>" href="<?= Url::to(['/projects/tag/index']) ?>">
-              <i class="bi bi-tags"></i> Projekt címkék
-            </a>
-          </li>
+          <?php if($notAssociate){ ?>
+            <li class="mb-2">
+              <a class="nav-link anim text-dark <?= GlobalHelper::isSelected('projects/status/index') ? 'selected' : '' ?>" href="<?= Url::to(['/projects/status/index']) ?>">
+                <i class="bi bi-palette2"></i> Projekt státuszok
+              </a>
+            </li>
+            <li class="mb-2">
+              <a class="nav-link anim text-dark <?= GlobalHelper::isSelected('projects/tag/index') ? 'selected' : '' ?>" href="<?= Url::to(['/projects/tag/index']) ?>">
+                <i class="bi bi-tags"></i> Projekt címkék
+              </a>
+            </li>
+          <?php } ?>
         </ul>
       </li>
       <li class="nav-item mb-2">

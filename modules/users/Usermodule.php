@@ -24,8 +24,10 @@ class Usermodule extends \yii\base\Module
     const STATUS_BANNED = 2;
 
     //RIGHTS
-    const RIGHT_USER = 0;
+    const RIGHT_MANAGER = 0;
     const RIGHT_ADMIN = 1;
+    const RIGHT_FINANCIAL = 2;
+    const RIGHT_ASSOCIATE = 3;
 
     const REMEMBER_ME_TIME = Constants::DAY_IN_SECONDS * 30;
     const ACTIVATION_TIME = Constants::DAY_IN_SECONDS * 7;
@@ -61,7 +63,9 @@ class Usermodule extends \yii\base\Module
 
     public static function getRights($item = false){
         $options = [
-            self::RIGHT_USER => 'Felhasználó',
+            self::RIGHT_MANAGER => 'Vezető',
+            self::RIGHT_FINANCIAL => 'Pénzügyi',
+            self::RIGHT_ASSOCIATE => 'Munkatárs',
             self::RIGHT_ADMIN => 'Admin',
         ];
         return ($item === false) ? $options : $options[$item];
@@ -128,6 +132,42 @@ class Usermodule extends \yii\base\Module
 
         asort($result); 
         return $result;
+    }
+
+    public static function getRightHint($right = false){
+        $options = [
+            self::RIGHT_ADMIN => "Minden jogosultság.",
+            self::RIGHT_MANAGER => "Mindenhez hozzáfér és kezelni is tudja azt, kivétel a felhasználókat.",
+            self::RIGHT_FINANCIAL => "Mindent tud kezelni, de nincs törlési jogosultsága a projektekhez, feladatokhoz és az ügyfelekhez.",
+            self::RIGHT_ASSOCIATE => "A feladatokat, projekteket, feladaton belüli üzenet küldést és az üzenőfalat eléri, de csak olvasási jogosultsága van hozzá, illetve nem látja a pénzügyi adatokat."
+        ];
+        return ($right === false) ? $options :$options[$right];
+    }
+
+    /**
+     * Törlési jogosultság engedélyezése projekthez, feladatokhoz és ügyfelekhez (saját üzenetet törölhet)
+     * @return boolean
+     */
+    public static function isDeleteEnabledForRight(){
+        $user = Yii::$app->user->identity;
+        $position = $user->position;
+        if(!empty($position) && in_array($position->rights,self::getDeleteRights())){
+            return true;
+        }
+        return false;
+    }
+
+    public static function getDeleteRights(){
+        return [self::RIGHT_ADMIN,self::RIGHT_MANAGER];
+    }
+
+    public static function isAssociate(){
+        $user = Yii::$app->user->identity;
+        $position = $user->position;
+        if(!empty($position) && in_array($position->rights,[self::RIGHT_ASSOCIATE])){
+            return true;
+        }
+        return false;
     }
 }
 

@@ -1,6 +1,7 @@
 <?php
 
 use app\modules\clients\models\Client;
+use app\modules\users\Usermodule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -35,6 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
             //'notes',
             [
                 'class' => ActionColumn::className(),
+                'visibleButtons' => [
+                    'delete' => function ($model, $key, $index) {
+                        return Usermodule::isDeleteEnabledForRight();
+                    },
+                ],
                 'urlCreator' => function ($action, Client $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }

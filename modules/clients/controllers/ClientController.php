@@ -6,6 +6,7 @@ use app\modules\clients\models\Client;
 use app\modules\clients\models\search\ClientSearch;
 use app\base\Controller;
 use app\components\AppAlert;
+use app\modules\users\Usermodule;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -18,19 +19,37 @@ class ClientController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
+    public function behaviors(){
+        $behaviors = parent::behaviors();
+        if (isset($behaviors['access']['rules'])) {
+            
+            array_unshift($behaviors['access']['rules'], [
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return Usermodule::isAssociate();
+                },
+                'denyCallback' => function ($rule, $action) {
+                    throw new \yii\web\ForbiddenHttpException('Ezzel a jogosultássgal nem érhető el ez a modul.');
+                }
+            ]);
+
+            array_unshift($behaviors['access']['rules'], [
+                'actions' => ['delete'],
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return !Usermodule::isDeleteEnabledForRight();
+                },
+            ]);
+        }
+
+        $behaviors['verbs'] = [
+            'class' => \yii\filters\VerbFilter::className(),
+            'actions' => [
+                'delete' => ['POST'],
+            ],
+        ];
+
+        return $behaviors;
     }
 
     public function beforeAction($action){
