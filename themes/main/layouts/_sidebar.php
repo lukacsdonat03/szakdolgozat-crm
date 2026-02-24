@@ -18,8 +18,8 @@ $notAssociate = !Usermodule::isAssociate();
       </li>
       <?php if($notAssociate){ ?>
         <li class="nav-item mb-2">
-          <a href="#" class="nav-link anim text-dark d-flex align-items-center">
-            <i class="bi bi-house me-2"></i> Dashboard
+          <a href="<?= Url::to(['/projects/project/dashboard']) ?>" class="nav-link anim text-dark d-flex align-items-center">
+            <i class="bi bi-house me-2"></i> Áttekintés
           </a>
         </li>
       <?php } ?>

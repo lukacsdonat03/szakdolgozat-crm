@@ -28,7 +28,7 @@ class ProjectController extends Controller
         if (isset($behaviors['access']['rules'])) {
             
             array_unshift($behaviors['access']['rules'], [
-                'actions' => ['update'],
+                'actions' => ['update','dashboard'],
                 'allow' => false,
                 'matchCallback' => function ($rule, $action) {
                     return Usermodule::isAssociate();
@@ -54,6 +54,11 @@ class ProjectController extends Controller
         return $behaviors;
     }
 
+    public function actionDashboard(){
+        
+
+        return $this->render("dashboard");
+    }
 
     public function actionTasks($id){
         $model = $this->findModel($id);
