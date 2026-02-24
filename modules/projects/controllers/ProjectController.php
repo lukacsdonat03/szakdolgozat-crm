@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use app\base\Controller;
 use app\components\AppAlert;
 use app\modules\projects\models\search\TaskSearch;
+use app\modules\projects\Projectmodule;
 use app\modules\users\Usermodule;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -56,8 +57,58 @@ class ProjectController extends Controller
 
     public function actionDashboard(){
         
+        $db = Yii::$app->db;
 
-        return $this->render("dashboard");
+        $statusData = $db->createCommand('
+            SELECT s.name, COUNT(p.id) as count 
+            FROM project_projects p 
+            JOIN project_statuses s ON p.status_id = s.id 
+            WHERE p.is_deleted = 0 
+            GROUP BY s.id
+        ')->queryAll();
+
+        $budgetData = $db->createCommand('
+            SELECT name, budget 
+            FROM project_projects 
+            WHERE is_deleted = 0 AND budget > 0 
+            ORDER BY budget DESC 
+            LIMIT 5
+        ')->queryAll();
+
+        $workerData = $db->createCommand('
+            SELECT up.name, COUNT(pt.id) as task_count 
+            FROM user_profiles up
+            LEFT JOIN project_tasks pt ON up.user_id = pt.assigned_to
+            WHERE pt.is_deleted = 0 AND pt.status != 3 -- feltételezve, hogy a 3-as a lezárt
+            GROUP BY up.user_id
+        ')->queryAll();
+
+        $priorityRaw = $db->createCommand('
+            SELECT priority, COUNT(id) as count 
+            FROM project_projects 
+            WHERE is_deleted = 0 
+            GROUP BY priority
+        ')->queryAll();
+
+        $priorityLabels = [];
+        $priorityCounts = [];
+        $allPriorities = Projectmodule::getPriorities();
+
+        foreach ($priorityRaw as $row) {
+            $priorityLabels[] = $allPriorities[$row['priority']] ?? 'Ismeretlen';
+            $priorityCounts[] = (int)$row['count'];
+        }
+
+        return $this->render("dashboard",[
+            'statusLabels' => array_column($statusData, 'name'),
+            'statusCounts' => array_map('intval', array_column($statusData, 'count')),
+            'budgetLabels' => array_column($budgetData, 'name'),
+            'budgetValues' => array_map('floatval', array_column($budgetData, 'budget')),
+            'workerLabels' => array_column($workerData, 'name'),
+            'workerCounts' => array_map('intval', array_column($workerData, 'task_count')),
+            'priorityLabels' => $priorityLabels,
+            'priorityCounts' => $priorityCounts,
+        ]);
     }
 
     public function actionTasks($id){

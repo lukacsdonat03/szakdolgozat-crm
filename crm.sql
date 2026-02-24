@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Feb 22. 15:37
+-- Létrehozás ideje: 2026. Feb 24. 20:39
 -- Kiszolgáló verziója: 9.1.0
 -- PHP verzió: 8.2.26
 
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `project_projects` (
 INSERT INTO `project_projects` (`id`, `client_id`, `name`, `description`, `status_id`, `priority`, `start_date`, `deadline`, `budget`, `created_by`, `created_at`, `updated_at`, `is_deleted`) VALUES
 (1, 1, 'CRM Migráció v2', '<h3>Adatb&aacute;zis k&ouml;lt&ouml;ztet&eacute;s</h3>\r\n\r\n<ul>\r\n	<li>SQL export&aacute;l&aacute;sa</li>\r\n	<li>Mezők megfeleltet&eacute;se</li>\r\n	<li><strong>Valid&aacute;l&aacute;s</strong></li>\r\n</ul>\r\n\r\n<p>&Uuml;gyelni kell a karakterk&oacute;dol&aacute;sra!</p>\r\n', 2, 2, '2026-02-20', '2026-04-05', 1200000, 8, '2026-02-22 15:57:37', '2026-02-22 15:57:37', 0),
 (2, 5, 'Webshop Integráció', '<p>Az &uuml;gyf&eacute;l szeretn&eacute; a&nbsp;<em>webshopj&aacute;t</em>&nbsp;&ouml;sszek&ouml;tni a megl&eacute;vő rakt&aacute;rk&eacute;szlettel.</p>\r\n', 1, 1, '2026-03-01', '2026-05-10', 800000, 8, '2026-02-22 16:05:21', '2026-02-22 16:05:21', 0),
-(3, 3, 'API Debugging', '<p><strong>Hiba:</strong> Az API nem ad vissza v&aacute;laszt a logisztikai modulnak.</p>\r\n\r\n<p>S&uuml;rgős jav&iacute;t&aacute;s sz&uuml;ks&eacute;ges a sz&aacute;ml&aacute;z&aacute;s miatt.</p>\r\n', 4, 3, '2026-03-01', '2026-03-10', 300000, 8, '2026-02-22 16:06:32', '2026-02-22 16:06:32', 0),
+(3, 3, 'API Debugging', '<p><strong>Hiba:</strong> Az API nem ad vissza v&aacute;laszt a logisztikai modulnak.</p>\r\n\r\n<p>S&uuml;rgős jav&iacute;t&aacute;s sz&uuml;ks&eacute;ges a sz&aacute;ml&aacute;z&aacute;s miatt.</p>\r\n', 4, 3, '2026-03-01', '2026-03-10', 300000, 2, '2026-02-22 16:06:32', '2026-02-24 21:28:57', 0),
 (4, 2, 'Mobil App Design', '<h1>UI/UX Tervez&eacute;s</h1>\r\n\r\n<p>A projekt jelenleg a felhaszn&aacute;l&oacute;i tesztel&eacute;s f&aacute;zis&aacute;ban van. Sz&iacute;nk&oacute;dok ellenőrz&eacute;se sz&uuml;ks&eacute;ges.</p>\r\n', 3, 0, '2026-02-22', '2026-05-10', 3500000, 8, '2026-02-22 16:07:15', '2026-02-22 16:07:15', 0);
 
 -- --------------------------------------------------------
