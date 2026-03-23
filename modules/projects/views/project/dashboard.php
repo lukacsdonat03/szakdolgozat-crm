@@ -55,7 +55,7 @@ $priorityCountsJs = json_encode($priorityCounts);
 $this->registerJs("
     // Projektstátusz
     new ApexCharts(document.querySelector('#chart-status'), {
-        chart: { type: 'donut', height: 350 },
+        chart: { type: 'donut', height: 350, },
         labels: $statusLabelsJs,
         series: $statusCountsJs,
         legend: { position: 'bottom' }
