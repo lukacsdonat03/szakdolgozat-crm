@@ -77,27 +77,27 @@ class MessageController extends Controller
     }
 
     public function actionSendWallMessage()
-{
-    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $model = new Message();
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = new Message();
 
-    if ($model->load(Yii::$app->request->post())) {
-        $model->sender_id = Yii::$app->user->id;
-      
-        if ($model->save()) {
-            return [
-                'success' => true,
-                'msg' => 'Üzenet elküldve!'
-            ];
+        if ($model->load(Yii::$app->request->post())) {
+            $model->sender_id = Yii::$app->user->id;
+        
+            if ($model->save()) {
+                return [
+                    'success' => true,
+                    'msg' => 'Üzenet elküldve!'
+                ];
+            }
         }
-    }
 
-    return [
-        'success' => false, 
-        'msg' => 'Hiba történt a mentés során.',
-        'errors' => $model->getErrors()
-    ];
-}
+        return [
+            'success' => false, 
+            'msg' => 'Hiba történt a mentés során.',
+            'errors' => $model->getErrors()
+        ];
+    }
 
     /**
      * Finds the Message model based on its primary key value.
