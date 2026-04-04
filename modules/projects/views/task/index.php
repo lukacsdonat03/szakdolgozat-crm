@@ -16,12 +16,16 @@ use yii\grid\GridView;
 
 $this->title = 'Feladatok';
 $this->params['breadcrumbs'][] = $this->title;
+
+$isAssociate = Usermodule::isAssociate();
 ?>
 <div class="task-index">
-
-    <p>
-        <?= Html::a('Létrehozás', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    
+    <?php if(!$isAssociate) { ?>
+        <p>
+            <?= Html::a('Létrehozás', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php } ?>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

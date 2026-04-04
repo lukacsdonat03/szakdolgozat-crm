@@ -45,6 +45,15 @@ class TaskController extends Controller
                     return !Usermodule::isDeleteEnabledForRight();
                 },
             ]);
+
+            
+            array_unshift($behaviors['access']['rules'], [
+                'actions' => ['create'],
+                'allow' => false,
+                'matchCallback' => function ($rule, $action) {
+                    return Usermodule::isAssociate();
+                },
+            ]);
         }
 
         $behaviors['verbs'] = [
