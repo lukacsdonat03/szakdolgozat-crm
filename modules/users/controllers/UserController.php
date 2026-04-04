@@ -143,8 +143,8 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
         $profile = $model->profile;
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+    
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save() && $profile->load($this->request->post()) && $profile->save()) {
             AppAlert::addSuccessAlert('Sikeres mentés');
             return $this->redirect(['index']);
         }

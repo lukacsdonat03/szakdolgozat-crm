@@ -16,12 +16,15 @@ use yii\grid\GridView;
 
 $this->title = 'Projektek';
 $this->params['breadcrumbs'][] = $this->title;
+$isAssociate = Usermodule::isAssociate();
 ?>
 <div class="project-index">
 
-    <p>
-        <?= Html::a('Projekt létrehozása', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if(!$isAssociate) { ?>
+        <p>
+            <?= Html::a('Projekt létrehozása', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php } ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
