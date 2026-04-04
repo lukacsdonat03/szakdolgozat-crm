@@ -17,7 +17,7 @@ class MessageSearch extends Message
     public function rules()
     {
         return [
-            [['id', 'sender_id', 'receiver_id', 'reply_to_id', 'is_deleted'], 'integer'],
+            [['id', 'sender_id', 'reply_to_id', 'is_deleted'], 'integer'],
             [['content', 'created_at'], 'safe'],
         ];
     }
@@ -69,7 +69,6 @@ class MessageSearch extends Message
         $query->andFilterWhere([
             'id' => $this->id,
             'sender_id' => $this->sender_id,
-            'receiver_id' => $this->receiver_id,
             'reply_to_id' => $this->reply_to_id,
             'created_at' => $this->created_at,
             'is_deleted' => $this->is_deleted,
