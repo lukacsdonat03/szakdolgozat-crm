@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Feb 24. 20:39
--- Kiszolgáló verziója: 9.1.0
--- PHP verzió: 8.2.26
+-- Létrehozás ideje: 2026. Ápr 04. 14:33
+-- Kiszolgáló verziója: 8.4.7
+-- PHP verzió: 8.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,13 +30,13 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `client_clients`;
 CREATE TABLE IF NOT EXISTS `client_clients` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
-  `name` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
-  `company` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Vállalat neve',
-  `email` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'E-mail cím',
-  `phone` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Telefonszám',
-  `tax_number` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Adószám',
-  `address` varchar(126) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Cím',
-  `notes` varchar(512) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Megjegyzés',
+  `name` varchar(126) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `company` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Vállalat neve',
+  `email` varchar(126) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'E-mail cím',
+  `phone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Telefonszám',
+  `tax_number` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Adószám',
+  `address` varchar(126) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Cím',
+  `notes` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Megjegyzés',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -63,16 +63,22 @@ DROP TABLE IF EXISTS `messages_message`;
 CREATE TABLE IF NOT EXISTS `messages_message` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
   `sender_id` int NOT NULL COMMENT 'Küldő',
-  `receiver_id` int DEFAULT NULL COMMENT 'Címzett (opcionális)',
   `reply_to_id` int DEFAULT NULL COMMENT 'Válasz (opcionális)',
-  `content` text COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Üzenet',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Üzenet',
   `created_at` datetime DEFAULT NULL COMMENT 'Küldve',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Törölve',
   PRIMARY KEY (`id`),
   KEY `fk_message_user_sender` (`sender_id`),
-  KEY `fk_message_user_receiver` (`receiver_id`),
   KEY `fk_message_message` (`reply_to_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `messages_message`
+--
+
+INSERT INTO `messages_message` (`id`, `sender_id`, `reply_to_id`, `content`, `created_at`, `is_deleted`) VALUES
+(1, 2, NULL, 'Sziasztok!', '2026-03-25 19:51:36', 0),
+(2, 2, 1, 'Válasz', '2026-04-04 16:28:49', 0);
 
 -- --------------------------------------------------------
 
@@ -84,8 +90,8 @@ DROP TABLE IF EXISTS `project_projects`;
 CREATE TABLE IF NOT EXISTS `project_projects` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
   `client_id` int NOT NULL COMMENT 'Ügyfél',
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
-  `description` text COLLATE utf8mb4_general_ci COMMENT 'Leírás',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT 'Leírás',
   `status_id` int DEFAULT NULL COMMENT 'Státusz',
   `priority` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Prioritás',
   `start_date` date NOT NULL COMMENT 'Projekt kezdete',
@@ -106,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `project_projects` (
 --
 
 INSERT INTO `project_projects` (`id`, `client_id`, `name`, `description`, `status_id`, `priority`, `start_date`, `deadline`, `budget`, `created_by`, `created_at`, `updated_at`, `is_deleted`) VALUES
-(1, 1, 'CRM Migráció v2', '<h3>Adatb&aacute;zis k&ouml;lt&ouml;ztet&eacute;s</h3>\r\n\r\n<ul>\r\n	<li>SQL export&aacute;l&aacute;sa</li>\r\n	<li>Mezők megfeleltet&eacute;se</li>\r\n	<li><strong>Valid&aacute;l&aacute;s</strong></li>\r\n</ul>\r\n\r\n<p>&Uuml;gyelni kell a karakterk&oacute;dol&aacute;sra!</p>\r\n', 2, 2, '2026-02-20', '2026-04-05', 1200000, 8, '2026-02-22 15:57:37', '2026-02-22 15:57:37', 0),
+(1, 1, 'CRM Migráció v2', '<h3>Adatb&aacute;zis k&ouml;lt&ouml;ztet&eacute;s</h3>\r\n\r\n<ul>\r\n	<li>SQL export&aacute;l&aacute;sa</li>\r\n	<li>Mezők megfeleltet&eacute;se</li>\r\n	<li><strong>Valid&aacute;l&aacute;s</strong></li>\r\n</ul>\r\n\r\n<p>&Uuml;gyelni kell a karakterk&oacute;dol&aacute;sra!</p>\r\n', 2, 2, '2026-02-20', '2026-04-05', 1200000, 2, '2026-02-22 15:57:37', '2026-04-04 16:32:33', 0),
 (2, 5, 'Webshop Integráció', '<p>Az &uuml;gyf&eacute;l szeretn&eacute; a&nbsp;<em>webshopj&aacute;t</em>&nbsp;&ouml;sszek&ouml;tni a megl&eacute;vő rakt&aacute;rk&eacute;szlettel.</p>\r\n', 1, 1, '2026-03-01', '2026-05-10', 800000, 8, '2026-02-22 16:05:21', '2026-02-22 16:05:21', 0),
 (3, 3, 'API Debugging', '<p><strong>Hiba:</strong> Az API nem ad vissza v&aacute;laszt a logisztikai modulnak.</p>\r\n\r\n<p>S&uuml;rgős jav&iacute;t&aacute;s sz&uuml;ks&eacute;ges a sz&aacute;ml&aacute;z&aacute;s miatt.</p>\r\n', 4, 3, '2026-03-01', '2026-03-10', 300000, 2, '2026-02-22 16:06:32', '2026-02-24 21:28:57', 0),
 (4, 2, 'Mobil App Design', '<h1>UI/UX Tervez&eacute;s</h1>\r\n\r\n<p>A projekt jelenleg a felhaszn&aacute;l&oacute;i tesztel&eacute;s f&aacute;zis&aacute;ban van. Sz&iacute;nk&oacute;dok ellenőrz&eacute;se sz&uuml;ks&eacute;ges.</p>\r\n', 3, 0, '2026-02-22', '2026-05-10', 3500000, 8, '2026-02-22 16:07:15', '2026-02-22 16:07:15', 0);
@@ -148,7 +154,7 @@ INSERT INTO `project_schedules` (`id`, `task_id`, `start_date`, `day_spread`) VA
 DROP TABLE IF EXISTS `project_statuses`;
 CREATE TABLE IF NOT EXISTS `project_statuses` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
-  `name` varchar(68) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `name` varchar(68) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
   `color_code` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Szín',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -173,8 +179,8 @@ INSERT INTO `project_statuses` (`id`, `name`, `color_code`) VALUES
 DROP TABLE IF EXISTS `project_tags`;
 CREATE TABLE IF NOT EXISTS `project_tags` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
-  `name` varchar(68) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
-  `color_code` varchar(7) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Szín',
+  `name` varchar(68) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `color_code` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Szín',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -183,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `project_tags` (
 --
 
 INSERT INTO `project_tags` (`id`, `name`, `color_code`) VALUES
-(1, 'Fontos', '#ffd966'),
+(1, 'Fontos', '#e3bd4b'),
 (2, 'Egyeztetés', '#3c78d8'),
 (3, 'Support', '#2196f3'),
 (4, 'Sürgős', '#cc0000');
@@ -199,8 +205,10 @@ CREATE TABLE IF NOT EXISTS `project_tag_relation` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
   `project_id` int NOT NULL COMMENT 'Projekt',
   `tag_id` int NOT NULL COMMENT 'Tag',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id`),
+  KEY `project_id_index` (`project_id`),
+  KEY `tag_id_index` (`tag_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `project_tag_relation`
@@ -225,8 +233,8 @@ CREATE TABLE IF NOT EXISTS `project_tasks` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
   `project_id` int DEFAULT NULL COMMENT 'Projekt',
   `assigned_to` int DEFAULT NULL COMMENT 'Hozzárendelve',
-  `title` varchar(126) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
-  `description` text COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Leírás',
+  `title` varchar(126) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Leírás',
   `status` tinyint(1) DEFAULT NULL COMMENT 'Státusz',
   `priority` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Prioritás',
   `due_date` datetime DEFAULT NULL COMMENT 'Határidő',
@@ -273,7 +281,14 @@ CREATE TABLE IF NOT EXISTS `project_task_messages` (
   KEY `fk_messages_tasks` (`task_id`),
   KEY `fk_messages_sender_user` (`sender_id`),
   KEY `fk_messages_receiver_user` (`receiver_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `project_task_messages`
+--
+
+INSERT INTO `project_task_messages` (`id`, `sender_id`, `receiver_id`, `content`, `task_id`, `created_at`, `is_deleted`) VALUES
+(1, 7, 2, 'Teszt üzenet', 5, '2026-03-25 19:52:21', 0);
 
 -- --------------------------------------------------------
 
@@ -284,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `project_task_messages` (
 DROP TABLE IF EXISTS `user_positions`;
 CREATE TABLE IF NOT EXISTS `user_positions` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
-  `name` varchar(128) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Megnevezés',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Megnevezés',
   `rights` tinyint NOT NULL DEFAULT '0' COMMENT 'Jogosultság',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -309,8 +324,8 @@ DROP TABLE IF EXISTS `user_profiles`;
 CREATE TABLE IF NOT EXISTS `user_profiles` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
   `user_id` int NOT NULL COMMENT 'Felhasználó',
-  `name` varchar(128) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
-  `phone` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Telefonszám',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Név',
+  `phone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Telefonszám',
   `position_id` int DEFAULT NULL COMMENT 'Beosztés',
   PRIMARY KEY (`id`),
   KEY `FK_profiles_positions` (`position_id`),
@@ -323,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 
 INSERT INTO `user_profiles` (`id`, `user_id`, `name`, `phone`, `position_id`) VALUES
 (1, 2, 'Admin1', '+36112312313', 2),
-(4, 7, 'Munkatárs Sándor', '+36201234567', 1),
+(4, 7, 'Munkatárs Sándor', '+36201234567', 4),
 (5, 8, 'Ceo Cecil', '+36707567777', 1),
 (6, 9, 'Pénzügy Páter', '+36201111111', 3);
 
@@ -336,12 +351,12 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `name`, `phone`, `position_id`) VA
 DROP TABLE IF EXISTS `user_users`;
 CREATE TABLE IF NOT EXISTS `user_users` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Azonosító',
-  `username` varchar(128) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Felhasználónév',
-  `email` varchar(128) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'E-mail cím',
-  `password` varchar(60) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Jelszó',
+  `username` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Felhasználónév',
+  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'E-mail cím',
+  `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Jelszó',
   `registration_date` datetime DEFAULT NULL COMMENT 'Regisztráció dátuma',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Státusz',
-  `token` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `token` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_users_username` (`username`),
   UNIQUE KEY `UQ_users_email` (`email`)
@@ -366,7 +381,6 @@ INSERT INTO `user_users` (`id`, `username`, `email`, `password`, `registration_d
 --
 ALTER TABLE `messages_message`
   ADD CONSTRAINT `fk_message_message` FOREIGN KEY (`reply_to_id`) REFERENCES `messages_message` (`id`),
-  ADD CONSTRAINT `fk_message_user_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `user_users` (`id`),
   ADD CONSTRAINT `fk_message_user_sender` FOREIGN KEY (`sender_id`) REFERENCES `user_users` (`id`);
 
 --
@@ -382,6 +396,13 @@ ALTER TABLE `project_projects`
 --
 ALTER TABLE `project_schedules`
   ADD CONSTRAINT `FK_schedules_tasks` FOREIGN KEY (`task_id`) REFERENCES `project_tasks` (`id`);
+
+--
+-- Megkötések a táblához `project_tag_relation`
+--
+ALTER TABLE `project_tag_relation`
+  ADD CONSTRAINT `project_tag_relation_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project_tasks` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `project_tag_relation_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `project_tags` (`id`) ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `project_tasks`
