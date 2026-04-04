@@ -39,7 +39,7 @@ class LoginController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post())) {
             if($model->login()){
-                return $this->redirect("/");
+                return $this->redirect(['/projects/task/calendar']);
             }else{
                 Yii::error($model->errors);
             }
