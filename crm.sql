@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3306
--- Létrehozás ideje: 2026. Ápr 04. 14:33
+-- Létrehozás ideje: 2026. Ápr 15. 17:05
 -- Kiszolgáló verziója: 8.4.7
 -- PHP verzió: 8.3.28
 
